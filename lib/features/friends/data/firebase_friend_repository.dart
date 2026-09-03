@@ -90,6 +90,7 @@ class FirebaseFriendRepository implements FriendRepository {
     batch.set(_users.doc(friendId), {
       'friendIds': FieldValue.arrayUnion([userId]),
     }, SetOptions(merge: true));
-    await batch.commit();
+    // Offline-first: queue the batch, don't await the server ack.
+    unawaited(batch.commit());
   }
 }

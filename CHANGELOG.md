@@ -7,6 +7,10 @@ All notable changes to this project are documented here. The format is based on
 ## [Unreleased]
 
 ### Added
+- **Offline-first (Firebase backend):** Firestore offline persistence enabled and
+  all writes made optimistic (non-blocking), so adding data never hangs without
+  internet; queued changes sync automatically on reconnect. Added a connectivity
+  provider and an offline/syncing status banner (`connectivity_plus`).
 - **Salary & savings:** add a salary to start a pay cycle; when the next salary
   arrives the current cycle is closed (leftover moved to savings or marked used)
   and a new cycle starts. Running savings total + cycle history. New

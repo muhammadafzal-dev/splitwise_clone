@@ -21,6 +21,9 @@ mock-first with clean architecture, so the backend swaps to Firebase in one file
   debts, all in a **pure, unit-tested engine** using integer cents (never floats).
 - 🔌 **Backend-swappable** — mock and Firebase implement the same interfaces;
   switching is a single provider override.
+- 📴 **Offline-first** — on the Firebase backend, writes are optimistic and
+  cached: add expenses/salary/budgets with no internet, and everything syncs
+  automatically when you're back online (with an offline/syncing banner).
 - 🎨 **Material 3** — light + dark, responsive, with loading / empty / error
   states everywhere.
 - 🧪 **Tested & clean** — `flutter analyze` reports 0 issues; the balance logic is

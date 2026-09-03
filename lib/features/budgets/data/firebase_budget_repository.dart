@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../data/firebase/firestore_mappers.dart';
@@ -24,10 +26,14 @@ class FirebaseBudgetRepository implements BudgetRepository {
   }
 
   @override
-  Future<void> setBudget(Budget budget) {
-    return _budgets.doc(budget.id).set(FirestoreMappers.budgetToMap(budget));
+  Future<void> setBudget(Budget budget) async {
+    unawaited(
+      _budgets.doc(budget.id).set(FirestoreMappers.budgetToMap(budget)),
+    );
   }
 
   @override
-  Future<void> removeBudget(String budgetId) => _budgets.doc(budgetId).delete();
+  Future<void> removeBudget(String budgetId) async {
+    unawaited(_budgets.doc(budgetId).delete());
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../data/firebase/firestore_mappers.dart';
@@ -47,14 +49,17 @@ class FirebaseGroupRepository implements GroupRepository {
       currencyCode: currencyCode,
       createdAt: DateTime.now(),
     );
-    await ref.set(FirestoreMappers.groupToMap(group));
+    // Offline-first: apply locally now, sync later (don't await server ack).
+    unawaited(ref.set(FirestoreMappers.groupToMap(group)));
     return group;
   }
 
   @override
-  Future<void> addMember(String groupId, String userId) {
-    return _groups.doc(groupId).update({
-      'memberIds': FieldValue.arrayUnion([userId]),
-    });
+  Future<void> addMember(String groupId, String userId) async {
+    unawaited(
+      _groups.doc(groupId).update({
+        'memberIds': FieldValue.arrayUnion([userId]),
+      }),
+    );
   }
 }

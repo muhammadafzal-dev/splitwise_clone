@@ -90,9 +90,12 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<void> signOut() => _auth.signOut();
 
   @override
-  Future<void> setPreferredCurrency(String userId, String currencyCode) {
-    return _users.doc(userId).set({
-      'preferredCurrencyCode': currencyCode,
-    }, SetOptions(merge: true));
+  Future<void> setPreferredCurrency(String userId, String currencyCode) async {
+    // Offline-first: apply locally now, sync when back online.
+    unawaited(
+      _users.doc(userId).set({
+        'preferredCurrencyCode': currencyCode,
+      }, SetOptions(merge: true)),
+    );
   }
 }

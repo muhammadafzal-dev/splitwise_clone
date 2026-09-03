@@ -24,7 +24,18 @@ Future<List<Override>> initializeFirebaseBackend() async {
   final firestore = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
 
+  // Offline-first: cache all data locally and queue writes made while offline.
+  // Firestore replays them and syncs automatically when connectivity returns.
+  // (On Android/iOS this is on by default; setting it explicitly also enables
+  // web IndexedDB persistence and an unbounded cache.)
+  firestore.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
+
   return [
+    // Signals to the UI that a cloud backend (with real sync) is active.
+    cloudBackendEnabledProvider.overrideWithValue(true),
     authRepositoryProvider.overrideWithValue(
       FirebaseAuthRepository(auth, firestore),
     ),

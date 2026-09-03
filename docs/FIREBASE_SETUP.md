@@ -55,6 +55,24 @@ config + flip the flag — no code changes.
    ```
    Without the flag the app stays on mock data.
 
+## Offline-first & sync
+
+The Firebase backend works fully offline and syncs automatically:
+
+- **Persistence** is enabled in `firebase_backend.dart`
+  (`Settings(persistenceEnabled: true, cacheSizeBytes: unlimited)`), so all data
+  and any writes made while offline are cached on the device.
+- **Writes are optimistic** — the Firebase repositories do *not* await the server
+  acknowledgement (which never resolves while offline). The write is applied to
+  the local cache immediately, the UI updates from the cache, and Firestore
+  replays the queued writes when connectivity returns.
+- A **status banner** (top of the app) shows "Offline — changes are saved and
+  will sync automatically" while offline, then "Back online — syncing…" on
+  reconnect. It only appears on the Firebase backend (the mock is already local).
+
+So the user can keep adding expenses, salaries, budgets, etc. with no internet;
+nothing blocks, and everything syncs to the live database once online.
+
 ## Data model
 
 ```

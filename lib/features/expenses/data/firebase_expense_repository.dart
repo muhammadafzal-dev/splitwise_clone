@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../data/firebase/firestore_mappers.dart';
@@ -66,7 +68,9 @@ class FirebaseExpenseRepository implements ExpenseRepository {
   Future<Expense> addExpense(Expense expense) async {
     final ref = _expenses.doc(expense.id.isEmpty ? null : expense.id);
     final stored = expense.copyWith(id: ref.id);
-    await ref.set(FirestoreMappers.expenseToMap(stored));
+    // Offline-first: don't await the server ack (it never resolves offline).
+    // The local cache applies the write immediately and syncs when back online.
+    unawaited(ref.set(FirestoreMappers.expenseToMap(stored)));
     return stored;
   }
 
@@ -74,7 +78,7 @@ class FirebaseExpenseRepository implements ExpenseRepository {
   Future<Settlement> addSettlement(Settlement settlement) async {
     final ref = _settlements.doc(settlement.id.isEmpty ? null : settlement.id);
     final stored = settlement.copyWith(id: ref.id);
-    await ref.set(FirestoreMappers.settlementToMap(stored));
+    unawaited(ref.set(FirestoreMappers.settlementToMap(stored)));
     return stored;
   }
 }

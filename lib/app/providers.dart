@@ -29,6 +29,11 @@ final mockStoreProvider = Provider<MockStore>((ref) {
   return store;
 });
 
+/// True when a real cloud backend (Firebase) is active — it has genuine offline
+/// queueing + sync. Overridden to true in `firebase_backend.dart`; false (mock)
+/// means everything is already local, so there is nothing to "sync".
+final cloudBackendEnabledProvider = Provider<bool>((ref) => false);
+
 final authRepositoryProvider = Provider<AuthRepository>(
   (ref) => MockAuthRepository(ref.watch(mockStoreProvider)),
 );

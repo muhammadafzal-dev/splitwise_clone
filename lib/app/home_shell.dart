@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/sync/sync_status_banner.dart';
+
 /// Bottom-navigation scaffold hosting the three primary tabs. The
 /// [navigationShell] keeps each branch's state alive across tab switches.
 class HomeShell extends StatelessWidget {
@@ -11,7 +13,12 @@ class HomeShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
+      body: Column(
+        children: [
+          const SyncStatusBanner(),
+          Expanded(child: navigationShell),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _goBranch,

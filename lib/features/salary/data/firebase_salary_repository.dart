@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../data/firebase/firestore_mappers.dart';
@@ -50,7 +52,7 @@ class FirebaseSalaryRepository implements SalaryRepository {
       currencyCode: currencyCode,
       startedAt: DateTime.now(),
     );
-    await ref.set(FirestoreMappers.salaryCycleToMap(cycle));
+    unawaited(ref.set(FirestoreMappers.salaryCycleToMap(cycle)));
     return cycle;
   }
 
@@ -59,11 +61,13 @@ class FirebaseSalaryRepository implements SalaryRepository {
     required String cycleId,
     required int savedMinorUnits,
     required CycleDisposition disposition,
-  }) {
-    return _cycles.doc(cycleId).update({
-      'endedAt': Timestamp.fromDate(DateTime.now()),
-      'savedMinorUnits': savedMinorUnits,
-      'disposition': disposition.name,
-    });
+  }) async {
+    unawaited(
+      _cycles.doc(cycleId).update({
+        'endedAt': Timestamp.fromDate(DateTime.now()),
+        'savedMinorUnits': savedMinorUnits,
+        'disposition': disposition.name,
+      }),
+    );
   }
 }
