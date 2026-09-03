@@ -29,8 +29,7 @@ void main() {
         ],
         settlements: const [],
       );
-      final total =
-          balances.values.fold<int>(0, (s, m) => s + m.minorUnits);
+      final total = balances.values.fold<int>(0, (s, m) => s + m.minorUnits);
       expect(total, 0);
     });
 
@@ -65,16 +64,17 @@ void main() {
         expenses: [
           equalExpense(payer: 'a', amount: 1000, participants: ['a', 'b']),
         ],
-        settlements: [
-          settlement(from: 'b', to: 'a', amount: 200),
-        ],
+        settlements: [settlement(from: 'b', to: 'a', amount: 200)],
       );
       expect(balances['a']!.minorUnits, 300);
       expect(balances['b']!.minorUnits, -300);
     });
 
     test('should_return_empty_for_no_activity', () {
-      final balances = calc.netBalances(expenses: const [], settlements: const []);
+      final balances = calc.netBalances(
+        expenses: const [],
+        settlements: const [],
+      );
       expect(balances, isEmpty);
     });
 

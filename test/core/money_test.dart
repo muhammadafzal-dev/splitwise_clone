@@ -42,10 +42,25 @@ void main() {
     });
 
     test('should_compare_and_be_value_equal', () {
-      expect(const Money(100, Currency.usd) == const Money(100, Currency.usd),
-          isTrue);
-      expect(const Money(100, Currency.usd) > const Money(50, Currency.usd),
-          isTrue);
+      expect(
+        const Money(100, Currency.usd) == const Money(100, Currency.usd),
+        isTrue,
+      );
+      expect(
+        const Money(100, Currency.usd) > const Money(50, Currency.usd),
+        isTrue,
+      );
+    });
+
+    test('should_throw_when_combining_different_currencies', () {
+      expect(
+        () => const Money(100, Currency.usd) + const Money(100, Currency.eur),
+        throwsArgumentError,
+      );
+      expect(
+        () => const Money(100, Currency.usd) - const Money(100, Currency.eur),
+        throwsArgumentError,
+      );
     });
   });
 }

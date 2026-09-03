@@ -10,18 +10,17 @@ Expense equalExpense({
   required int amount,
   required List<String> participants,
   String currency = 'USD',
-}) =>
-    Expense(
-      id: id,
-      groupId: group,
-      description: 'test',
-      payerId: payer,
-      amountMinorUnits: amount,
-      currencyCode: currency,
-      splitType: SplitType.equal,
-      participantIds: participants,
-      createdAt: DateTime(2026),
-    );
+}) => Expense(
+  id: id,
+  groupId: group,
+  description: 'test',
+  payerId: payer,
+  amountMinorUnits: amount,
+  currencyCode: currency,
+  splitType: SplitType.equal,
+  participantIds: participants,
+  createdAt: DateTime(2026),
+);
 
 Expense exactExpense({
   String id = 'e',
@@ -30,19 +29,18 @@ Expense exactExpense({
   required int amount,
   required Map<String, int> shares,
   String currency = 'USD',
-}) =>
-    Expense(
-      id: id,
-      groupId: group,
-      description: 'test',
-      payerId: payer,
-      amountMinorUnits: amount,
-      currencyCode: currency,
-      splitType: SplitType.exact,
-      participantIds: shares.keys.toList(),
-      exactShares: shares,
-      createdAt: DateTime(2026),
-    );
+}) => Expense(
+  id: id,
+  groupId: group,
+  description: 'test',
+  payerId: payer,
+  amountMinorUnits: amount,
+  currencyCode: currency,
+  splitType: SplitType.exact,
+  participantIds: shares.keys.toList(),
+  exactShares: shares,
+  createdAt: DateTime(2026),
+);
 
 Expense percentExpense({
   String id = 'e',
@@ -51,19 +49,18 @@ Expense percentExpense({
   required int amount,
   required Map<String, int> basisPoints,
   String currency = 'USD',
-}) =>
-    Expense(
-      id: id,
-      groupId: group,
-      description: 'test',
-      payerId: payer,
-      amountMinorUnits: amount,
-      currencyCode: currency,
-      splitType: SplitType.percent,
-      participantIds: basisPoints.keys.toList(),
-      percentShares: basisPoints,
-      createdAt: DateTime(2026),
-    );
+}) => Expense(
+  id: id,
+  groupId: group,
+  description: 'test',
+  payerId: payer,
+  amountMinorUnits: amount,
+  currencyCode: currency,
+  splitType: SplitType.percent,
+  participantIds: basisPoints.keys.toList(),
+  percentShares: basisPoints,
+  createdAt: DateTime(2026),
+);
 
 Settlement settlement({
   String id = 's',
@@ -72,13 +69,12 @@ Settlement settlement({
   required String to,
   required int amount,
   String currency = 'USD',
-}) =>
-    Settlement(
-      id: id,
-      groupId: group,
-      fromUserId: from,
-      toUserId: to,
-      amountMinorUnits: amount,
-      currencyCode: currency,
-      createdAt: DateTime(2026),
-    );
+}) => Settlement(
+  id: id,
+  groupId: group,
+  fromUserId: from,
+  toUserId: to,
+  amountMinorUnits: amount,
+  currencyCode: currency,
+  createdAt: DateTime(2026),
+);

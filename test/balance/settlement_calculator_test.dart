@@ -8,8 +8,8 @@ void main() {
   const calc = SettlementCalculator();
 
   Map<String, Money> usd(Map<String, int> raw) => {
-        for (final e in raw.entries) e.key: Money(e.value, Currency.usd),
-      };
+    for (final e in raw.entries) e.key: Money(e.value, Currency.usd),
+  };
 
   group('SettlementCalculator', () {
     test('should_return_empty_when_all_settled', () {
@@ -35,10 +35,14 @@ void main() {
     test('should_split_one_creditor_across_multiple_debtors', () {
       final edges = calc.minimize(usd({'a': 1000, 'b': -600, 'c': -400}));
       expect(edges.length, 2);
-      expect(edges.any((e) => e.fromUserId == 'b' && e.amount.minorUnits == 600),
-          isTrue);
-      expect(edges.any((e) => e.fromUserId == 'c' && e.amount.minorUnits == 400),
-          isTrue);
+      expect(
+        edges.any((e) => e.fromUserId == 'b' && e.amount.minorUnits == 600),
+        isTrue,
+      );
+      expect(
+        edges.any((e) => e.fromUserId == 'c' && e.amount.minorUnits == 400),
+        isTrue,
+      );
     });
 
     test('should_leave_everyone_at_zero_after_applying_edges', () {
@@ -58,8 +62,9 @@ void main() {
 
     test('should_minimize_transactions_greedily', () {
       // Two creditors, two debtors; greedy match biggest-to-biggest.
-      final edges =
-          calc.minimize(usd({'a': 700, 'b': 300, 'c': -800, 'd': -200}));
+      final edges = calc.minimize(
+        usd({'a': 700, 'b': 300, 'c': -800, 'd': -200}),
+      );
       // c (800) settles with a (700) then d? a exhausted -> c pays a 700,
       // then c 100 left pays b, then d 200 pays b 200. 3 edges, all reconcile.
       final total = edges.fold<int>(0, (s, e) => s + e.amount.minorUnits);
@@ -69,8 +74,10 @@ void main() {
     test('should_filter_edges_for_a_single_user', () {
       final balances = usd({'a': 1000, 'b': -600, 'c': -400});
       final forB = calc.forUser(balances, 'b');
-      expect(forB.every((e) => e.fromUserId == 'b' || e.toUserId == 'b'),
-          isTrue);
+      expect(
+        forB.every((e) => e.fromUserId == 'b' || e.toUserId == 'b'),
+        isTrue,
+      );
       expect(forB.length, 1);
     });
   });
