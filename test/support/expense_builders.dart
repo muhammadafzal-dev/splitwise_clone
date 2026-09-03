@@ -1,4 +1,5 @@
 import 'package:splitwise_clone/features/expenses/domain/entities/expense.dart';
+import 'package:splitwise_clone/features/expenses/domain/entities/expense_category.dart';
 import 'package:splitwise_clone/features/expenses/domain/entities/settlement.dart';
 import 'package:splitwise_clone/features/expenses/domain/entities/split_type.dart';
 
@@ -10,6 +11,8 @@ Expense equalExpense({
   required int amount,
   required List<String> participants,
   String currency = 'USD',
+  ExpenseCategory category = ExpenseCategory.other,
+  DateTime? createdAt,
 }) => Expense(
   id: id,
   groupId: group,
@@ -19,7 +22,8 @@ Expense equalExpense({
   currencyCode: currency,
   splitType: SplitType.equal,
   participantIds: participants,
-  createdAt: DateTime(2026),
+  createdAt: createdAt ?? DateTime(2026),
+  category: category,
 );
 
 Expense exactExpense({
