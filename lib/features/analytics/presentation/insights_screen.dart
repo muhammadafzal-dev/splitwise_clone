@@ -98,7 +98,7 @@ class InsightsScreen extends ConsumerWidget {
                   name: PersonalGroup.name,
                   emoji: PersonalGroup.emoji,
                   memberIds: [userId],
-                  currencyCode: 'USD',
+                  currencyCode: ref.read(preferredCurrencyProvider).code,
                 ))
             .id;
 

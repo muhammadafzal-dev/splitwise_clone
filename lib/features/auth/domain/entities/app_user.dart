@@ -14,6 +14,10 @@ abstract class AppUser with _$AppUser {
 
     /// ARGB colour used for the avatar when there is no photo.
     required int avatarColor,
+
+    /// The user's preferred/default currency (ISO code). Used as the default
+    /// for new groups, budgets and personal expenses.
+    @Default('USD') String preferredCurrencyCode,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>

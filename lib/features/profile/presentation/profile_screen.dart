@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/providers.dart';
+import '../../../core/money/currency.dart';
 import '../../../core/widgets/async_value_view.dart';
+import '../../../core/widgets/currency_picker.dart';
 import '../../../core/widgets/state_views.dart';
 import '../../../core/widgets/user_avatar.dart';
 import '../../auth/application/auth_providers.dart';
@@ -59,6 +62,29 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.currency_exchange),
+                  title: const Text('Preferred currency'),
+                  subtitle: Text(
+                    '${Currency.fromCode(user.preferredCurrencyCode).displayName}'
+                    ' · ${user.preferredCurrencyCode}',
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () async {
+                    final picked = await showCurrencyPicker(
+                      context,
+                      selected: Currency.fromCode(user.preferredCurrencyCode),
+                    );
+                    if (picked != null) {
+                      await ref
+                          .read(authRepositoryProvider)
+                          .setPreferredCurrency(user.id, picked.code);
+                    }
+                  },
                 ),
               ),
               const SizedBox(height: 12),

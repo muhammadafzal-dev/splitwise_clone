@@ -25,6 +25,8 @@ class FirestoreMappers {
       name: (data['name'] as String?) ?? '',
       email: (data['email'] as String?) ?? '',
       avatarColor: (data['avatarColor'] as num?)?.toInt() ?? 0xFF9E9E9E,
+      preferredCurrencyCode:
+          (data['preferredCurrencyCode'] as String?) ?? 'USD',
     );
   }
 
@@ -32,6 +34,7 @@ class FirestoreMappers {
     'name': user.name,
     'email': user.email,
     'avatarColor': user.avatarColor,
+    'preferredCurrencyCode': user.preferredCurrencyCode,
   };
 
   // --- Group -----------------------------------------------------------------

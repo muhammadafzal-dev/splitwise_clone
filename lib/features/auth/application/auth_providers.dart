@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/providers.dart';
+import '../../../core/money/currency.dart';
 import '../domain/entities/app_user.dart';
 
 /// The signed-in user (null while loading or signed out).
@@ -27,4 +28,10 @@ final allUsersProvider = StreamProvider<List<AppUser>>(
 final userDirectoryProvider = Provider<Map<String, AppUser>>((ref) {
   final users = ref.watch(allUsersProvider).value ?? const [];
   return {for (final u in users) u.id: u};
+});
+
+/// The signed-in user's preferred/default currency (USD until loaded).
+final preferredCurrencyProvider = Provider<Currency>((ref) {
+  final user = ref.watch(currentUserProvider).value;
+  return Currency.fromCode(user?.preferredCurrencyCode ?? 'USD');
 });

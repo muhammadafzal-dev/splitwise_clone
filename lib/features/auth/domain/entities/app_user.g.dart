@@ -11,6 +11,7 @@ _AppUser _$AppUserFromJson(Map<String, dynamic> json) => _AppUser(
   name: json['name'] as String,
   email: json['email'] as String,
   avatarColor: (json['avatarColor'] as num).toInt(),
+  preferredCurrencyCode: json['preferredCurrencyCode'] as String? ?? 'USD',
 );
 
 Map<String, dynamic> _$AppUserToJson(_AppUser instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$AppUserToJson(_AppUser instance) => <String, dynamic>{
   'name': instance.name,
   'email': instance.email,
   'avatarColor': instance.avatarColor,
+  'preferredCurrencyCode': instance.preferredCurrencyCode,
 };

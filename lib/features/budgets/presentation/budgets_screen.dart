@@ -69,11 +69,14 @@ class BudgetsScreen extends ConsumerWidget {
   }) async {
     final userId = ref.read(currentUserIdProvider);
     if (userId == null) return;
+    final Currency currency =
+        existing?.currency ?? ref.read(preferredCurrencyProvider);
     final result = await showModalBottomSheet<Budget>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) => _BudgetEditor(userId: userId, existing: existing),
+      builder: (_) =>
+          _BudgetEditor(userId: userId, currency: currency, existing: existing),
     );
     if (result != null) {
       await ref.read(budgetRepositoryProvider).setBudget(result);
@@ -168,9 +171,14 @@ class _BudgetCard extends StatelessWidget {
 }
 
 class _BudgetEditor extends StatefulWidget {
-  const _BudgetEditor({required this.userId, this.existing});
+  const _BudgetEditor({
+    required this.userId,
+    required this.currency,
+    this.existing,
+  });
 
   final String userId;
+  final Currency currency;
   final Budget? existing;
 
   @override
@@ -239,10 +247,10 @@ class _BudgetEditorState extends State<_BudgetEditor> {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
               ],
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Monthly limit',
-                prefixText: '\$ ',
-                prefixIcon: Icon(Icons.savings_outlined),
+                prefixText: '${widget.currency.symbol} ',
+                prefixIcon: const Icon(Icons.savings_outlined),
               ),
             ),
             const SizedBox(height: 20),
@@ -268,8 +276,11 @@ class _BudgetEditorState extends State<_BudgetEditor> {
       id: widget.existing?.id ?? 'b_${const Uuid().v4()}',
       userId: widget.userId,
       category: _category,
-      monthlyLimitMinorUnits: Money.fromMajor(major, Currency.usd).minorUnits,
-      currencyCode: 'USD',
+      monthlyLimitMinorUnits: Money.fromMajor(
+        major,
+        widget.currency,
+      ).minorUnits,
+      currencyCode: widget.currency.code,
     );
     Navigator.of(context).pop(budget);
   }

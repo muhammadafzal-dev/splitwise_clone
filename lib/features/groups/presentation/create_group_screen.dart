@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/providers.dart';
+import '../../../core/money/currency.dart';
 import '../../../core/widgets/async_value_view.dart';
+import '../../../core/widgets/currency_picker.dart';
 import '../../../core/widgets/user_avatar.dart';
 import '../../auth/application/auth_providers.dart';
 import '../../friends/application/friend_providers.dart';
@@ -20,6 +22,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   final _nameController = TextEditingController();
   String _emoji = _emojis.first;
   final Set<String> _selectedFriendIds = {};
+  Currency? _currency;
   bool _submitting = false;
 
   @override
@@ -32,6 +35,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   Widget build(BuildContext context) {
     final friends = ref.watch(friendsProvider);
     final currentUser = ref.watch(currentUserProvider).value;
+    final Currency currency = _currency ?? ref.watch(preferredCurrencyProvider);
+    _currency ??= currency;
 
     return Scaffold(
       appBar: AppBar(title: const Text('New group')),
@@ -54,6 +59,22 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.currency_exchange),
+              title: const Text('Currency'),
+              subtitle: Text('${currency.displayName} · ${currency.code}'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final picked = await showCurrencyPicker(
+                  context,
+                  selected: currency,
+                );
+                if (picked != null) setState(() => _currency = picked);
+              },
+            ),
           ),
           const SizedBox(height: 24),
           Text('Members', style: Theme.of(context).textTheme.titleMedium),
@@ -161,7 +182,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             name: _nameController.text.trim(),
             emoji: _emoji,
             memberIds: {currentUserId, ..._selectedFriendIds}.toList(),
-            currencyCode: 'USD',
+            currencyCode: (_currency ?? Currency.usd).code,
           );
       navigator.pop();
       messenger.showSnackBar(const SnackBar(content: Text('Group created')));

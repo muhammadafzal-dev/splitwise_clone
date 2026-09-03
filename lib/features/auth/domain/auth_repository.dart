@@ -22,4 +22,7 @@ abstract interface class AuthRepository {
   Future<void> signInAs(String userId);
 
   Future<void> signOut();
+
+  /// Update a user's preferred/default currency (ISO code).
+  Future<void> setPreferredCurrency(String userId, String currencyCode);
 }

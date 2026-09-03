@@ -117,6 +117,14 @@ class MockStore {
     _emit();
   }
 
+  Future<void> setPreferredCurrency(String userId, String currencyCode) async {
+    await Future<void>.delayed(latency);
+    final index = _users.indexWhere((u) => u.id == userId);
+    if (index == -1) return;
+    _users[index] = _users[index].copyWith(preferredCurrencyCode: currencyCode);
+    _emit();
+  }
+
   Future<void> addFriend(String userId, String friendId) async {
     await Future<void>.delayed(latency);
     _friendships.putIfAbsent(userId, () => {}).add(friendId);

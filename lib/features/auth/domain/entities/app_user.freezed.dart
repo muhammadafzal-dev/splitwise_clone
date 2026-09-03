@@ -17,7 +17,9 @@ T _$identity<T>(T value) => value;
 mixin _$AppUser {
 
  String get id; String get name; String get email;/// ARGB colour used for the avatar when there is no photo.
- int get avatarColor;
+ int get avatarColor;/// The user's preferred/default currency (ISO code). Used as the default
+/// for new groups, budgets and personal expenses.
+ String get preferredCurrencyCode;
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -31,20 +33,20 @@ $AppUserCopyWith<AppUser> get copyWith => _$AppUserCopyWithImpl<AppUser>(this as
 @override
 bool operator ==(Object other) {
   final _this = this as AppUser;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.avatarColor, _this.avatarColor) || other.avatarColor == _this.avatarColor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.avatarColor, _this.avatarColor) || other.avatarColor == _this.avatarColor)&&(identical(other.preferredCurrencyCode, _this.preferredCurrencyCode) || other.preferredCurrencyCode == _this.preferredCurrencyCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as AppUser;
-  return Object.hash(runtimeType,_this.id,_this.name,_this.email,_this.avatarColor);
+  return Object.hash(runtimeType,_this.id,_this.name,_this.email,_this.avatarColor,_this.preferredCurrencyCode);
 }
 
 @override
 String toString() {
   final _this = this as AppUser;
-  return 'AppUser(id: ${_this.id}, name: ${_this.name}, email: ${_this.email}, avatarColor: ${_this.avatarColor})';
+  return 'AppUser(id: ${_this.id}, name: ${_this.name}, email: ${_this.email}, avatarColor: ${_this.avatarColor}, preferredCurrencyCode: ${_this.preferredCurrencyCode})';
 }
 
 
@@ -55,7 +57,7 @@ abstract mixin class $AppUserCopyWith<$Res>  {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) _then) = _$AppUserCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String email, int avatarColor
+ String id, String name, String email, int avatarColor, String preferredCurrencyCode
 });
 
 
@@ -72,13 +74,14 @@ class _$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatarColor = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatarColor = null,Object? preferredCurrencyCode = null,}) {
   return _then(AppUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,avatarColor: null == avatarColor ? _self.avatarColor : avatarColor // ignore: cast_nullable_to_non_nullable
-as int,
+as int,preferredCurrencyCode: null == preferredCurrencyCode ? _self.preferredCurrencyCode : preferredCurrencyCode // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -163,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String email,  int avatarColor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String email,  int avatarColor,  String preferredCurrencyCode)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.avatarColor);case _:
+return $default(_that.id,_that.name,_that.email,_that.avatarColor,_that.preferredCurrencyCode);case _:
   return orElse();
 
 }
@@ -184,10 +187,10 @@ return $default(_that.id,_that.name,_that.email,_that.avatarColor);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String email,  int avatarColor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String email,  int avatarColor,  String preferredCurrencyCode)  $default,) {final _that = this;
 switch (_that) {
 case _AppUser():
-return $default(_that.id,_that.name,_that.email,_that.avatarColor);case _:
+return $default(_that.id,_that.name,_that.email,_that.avatarColor,_that.preferredCurrencyCode);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +207,10 @@ return $default(_that.id,_that.name,_that.email,_that.avatarColor);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String email,  int avatarColor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String email,  int avatarColor,  String preferredCurrencyCode)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.avatarColor);case _:
+return $default(_that.id,_that.name,_that.email,_that.avatarColor,_that.preferredCurrencyCode);case _:
   return null;
 
 }
@@ -219,7 +222,7 @@ return $default(_that.id,_that.name,_that.email,_that.avatarColor);case _:
 @JsonSerializable()
 
 class _AppUser implements AppUser {
-  const _AppUser({required this.id, required this.name, required this.email, required this.avatarColor});
+  const _AppUser({required this.id, required this.name, required this.email, required this.avatarColor, this.preferredCurrencyCode = 'USD'});
   factory _AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
 
 @override final  String id;
@@ -227,6 +230,9 @@ class _AppUser implements AppUser {
 @override final  String email;
 /// ARGB colour used for the avatar when there is no photo.
 @override final  int avatarColor;
+/// The user's preferred/default currency (ISO code). Used as the default
+/// for new groups, budgets and personal expenses.
+@override@JsonKey() final  String preferredCurrencyCode;
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
@@ -241,18 +247,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarColor, avatarColor) || other.avatarColor == avatarColor));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarColor, avatarColor) || other.avatarColor == avatarColor)&&(identical(other.preferredCurrencyCode, preferredCurrencyCode) || other.preferredCurrencyCode == preferredCurrencyCode));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,name,email,avatarColor);
+    return Object.hash(runtimeType,id,name,email,avatarColor,preferredCurrencyCode);
 }
 
 @override
 String toString() {
-    return 'AppUser(id: $id, name: $name, email: $email, avatarColor: $avatarColor)';
+    return 'AppUser(id: $id, name: $name, email: $email, avatarColor: $avatarColor, preferredCurrencyCode: $preferredCurrencyCode)';
 }
 
 
@@ -263,7 +269,7 @@ abstract mixin class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$AppUserCopyWith(_AppUser value, $Res Function(_AppUser) _then) = __$AppUserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String email, int avatarColor
+ String id, String name, String email, int avatarColor, String preferredCurrencyCode
 });
 
 
@@ -280,13 +286,14 @@ class __$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatarColor = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatarColor = null,Object? preferredCurrencyCode = null,}) {
   return _then(_AppUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,avatarColor: null == avatarColor ? _self.avatarColor : avatarColor // ignore: cast_nullable_to_non_nullable
-as int,
+as int,preferredCurrencyCode: null == preferredCurrencyCode ? _self.preferredCurrencyCode : preferredCurrencyCode // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

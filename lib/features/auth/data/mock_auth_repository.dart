@@ -33,6 +33,10 @@ class MockAuthRepository implements AuthRepository {
   @override
   Future<void> signOut() => _store.signOut();
 
+  @override
+  Future<void> setPreferredCurrency(String userId, String currencyCode) =>
+      _store.setPreferredCurrency(userId, currencyCode);
+
   AppUser? _userOrNull(List<AppUser> users, String? id) {
     if (id == null) return null;
     for (final user in users) {
