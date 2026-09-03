@@ -38,28 +38,29 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Stream<AppUser?> watchCurrentUser() {
     // switchMap: whenever auth state changes, resubscribe to that user's doc.
+    // Subscriptions are created lazily in onListen and torn down in onCancel so
+    // nothing leaks if the stream is built but never listened to.
     final controller = StreamController<AppUser?>();
+    StreamSubscription<User?>? authSub;
     StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? profileSub;
 
-    final authSub = _auth.authStateChanges().listen((user) {
-      profileSub?.cancel();
-      if (user == null) {
-        controller.add(null);
-        return;
-      }
-      profileSub = _users.doc(user.uid).snapshots().listen(
-        (doc) {
+    controller.onListen = () {
+      authSub = _auth.authStateChanges().listen((user) {
+        profileSub?.cancel();
+        if (user == null) {
+          controller.add(null);
+          return;
+        }
+        profileSub = _users.doc(user.uid).snapshots().listen((doc) {
           controller.add(
             doc.exists ? FirestoreMappers.userFromDoc(doc) : currentUser,
           );
-        },
-        onError: controller.addError,
-      );
-    }, onError: controller.addError);
-
+        }, onError: controller.addError);
+      }, onError: controller.addError);
+    };
     controller.onCancel = () async {
       await profileSub?.cancel();
-      await authSub.cancel();
+      await authSub?.cancel();
     };
     return controller.stream;
   }
@@ -73,8 +74,8 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Stream<List<AppUser>> watchAllUsers() {
     return _users.snapshots().map(
-          (snap) => snap.docs.map(FirestoreMappers.userFromDoc).toList(),
-        );
+      (snap) => snap.docs.map(FirestoreMappers.userFromDoc).toList(),
+    );
   }
 
   @override

@@ -40,10 +40,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         children: [
           Row(
             children: [
-              _EmojiButton(
-                emoji: _emoji,
-                onTap: _pickEmoji,
-              ),
+              _EmojiButton(emoji: _emoji, onTap: _pickEmoji),
               const SizedBox(width: 16),
               Expanded(
                 child: TextField(
@@ -65,9 +62,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             currentUser == null
                 ? 'You will be added automatically'
                 : '${currentUser.name} (you) will be added automatically',
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
+            style: Theme.of(context).textTheme.bodySmall
                 ?.copyWith(color: Theme.of(context).colorScheme.outline),
           ),
           const SizedBox(height: 12),
@@ -156,15 +151,24 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     final currentUserId = ref.read(currentUserIdProvider);
     if (currentUserId == null) return;
 
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     setState(() => _submitting = true);
     try {
-      await ref.read(groupRepositoryProvider).createGroup(
+      await ref
+          .read(groupRepositoryProvider)
+          .createGroup(
             name: _nameController.text.trim(),
             emoji: _emoji,
             memberIds: {currentUserId, ..._selectedFriendIds}.toList(),
             currencyCode: 'USD',
           );
-      if (mounted) Navigator.of(context).pop();
+      navigator.pop();
+      messenger.showSnackBar(const SnackBar(content: Text('Group created')));
+    } on Object catch (e) {
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('Could not create group: $e')));
     } finally {
       if (mounted) setState(() => _submitting = false);
     }

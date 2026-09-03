@@ -63,22 +63,36 @@ class MockStore {
   }
 
   MockSnapshot get snapshot => MockSnapshot(
-        currentUserId: _currentUserId,
-        users: List.unmodifiable(_users),
-        groups: List.unmodifiable(_groups),
-        expenses: List.unmodifiable(_expenses),
-        settlements: List.unmodifiable(_settlements),
-        friendships: {
-          for (final e in _friendships.entries)
-            e.key: Set.unmodifiable(e.value),
-        },
-      );
+    currentUserId: _currentUserId,
+    users: List.unmodifiable(_users),
+    groups: List.unmodifiable(_groups),
+    expenses: List.unmodifiable(_expenses),
+    settlements: List.unmodifiable(_settlements),
+    friendships: {
+      for (final e in _friendships.entries) e.key: Set.unmodifiable(e.value),
+    },
+  );
 
   /// Replays the current snapshot (after [latency]) then streams every change.
-  Stream<MockSnapshot> watch() async* {
-    await Future<void>.delayed(latency);
-    yield snapshot;
-    yield* _controller.stream;
+  ///
+  /// The live subscription is attached *before* the initial snapshot is emitted,
+  /// so a mutation happening during the latency window can't be missed.
+  Stream<MockSnapshot> watch() {
+    final controller = StreamController<MockSnapshot>();
+    StreamSubscription<MockSnapshot>? sub;
+
+    controller.onListen = () async {
+      sub = _controller.stream.listen(
+        controller.add,
+        onError: controller.addError,
+      );
+      await Future<void>.delayed(latency);
+      if (!controller.isClosed) controller.add(snapshot);
+    };
+    controller.onCancel = () async {
+      await sub?.cancel();
+    };
+    return controller.stream;
   }
 
   void _emit() => _controller.add(snapshot);
@@ -117,9 +131,7 @@ class MockStore {
     if (index == -1) return;
     final group = _groups[index];
     if (group.memberIds.contains(userId)) return;
-    _groups[index] = group.copyWith(
-      memberIds: [...group.memberIds, userId],
-    );
+    _groups[index] = group.copyWith(memberIds: [...group.memberIds, userId]);
     _emit();
   }
 

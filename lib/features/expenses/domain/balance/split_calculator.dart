@@ -25,8 +25,7 @@ class SplitCalculator {
     return switch (expense.splitType) {
       SplitType.equal => _equal(participants, total),
       SplitType.exact => _exact(participants, total, expense.exactShares),
-      SplitType.percent =>
-        _percent(participants, total, expense.percentShares),
+      SplitType.percent => _percent(participants, total, expense.percentShares),
     };
   }
 
@@ -65,9 +64,7 @@ class SplitCalculator {
       sum += value;
     }
     if (sum != total) {
-      throw SplitException(
-        'EXACT shares sum to $sum but total is $total.',
-      );
+      throw SplitException('EXACT shares sum to $sum but total is $total.');
     }
     // Copy in participant order for a stable result.
     return {for (final id in participants) id: exactShares[id]!};
@@ -112,11 +109,16 @@ class SplitCalculator {
 
     var leftover = total - distributed;
     if (leftover > 0) {
+      // Precompute positions so the tie-break is O(1) per comparison, not O(n).
+      final position = <String, int>{
+        for (var i = 0; i < participants.length; i++) participants[i]: i,
+      };
       // Order participants by remainder desc, breaking ties by list order.
-      final order = [...participants]..sort((a, b) {
+      final order = [...participants]
+        ..sort((a, b) {
           final cmp = remainders[b]!.compareTo(remainders[a]!);
           if (cmp != 0) return cmp;
-          return participants.indexOf(a).compareTo(participants.indexOf(b));
+          return position[a]!.compareTo(position[b]!);
         });
       for (final id in order) {
         if (leftover == 0) break;

@@ -74,10 +74,14 @@ class Money implements Comparable<Money> {
   }
 
   void _assertSameCurrency(Money other) {
-    assert(
-      currency == other.currency,
-      'Cannot mix currencies: $currency vs ${other.currency}',
-    );
+    // A real guard (not `assert`, which is stripped in release) — mixing
+    // currencies is always a bug and must fail loudly everywhere.
+    if (currency != other.currency) {
+      throw ArgumentError(
+        'Cannot combine different currencies: '
+        '${currency.code} and ${other.currency.code}',
+      );
+    }
   }
 
   @override

@@ -50,9 +50,24 @@ class _SettleUpScreenState extends ConsumerState<SettleUpScreen> {
     ];
     if (members.isEmpty) return const Scaffold(body: LoadingView());
 
+    // A payment needs two different people. A solo group has nobody to pay.
+    if (members.length < 2) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Settle up')),
+        body: const EmptyView(
+          icon: Icons.group_add_outlined,
+          title: 'Add someone first',
+          message: 'Invite another member to this group before settling up.',
+        ),
+      );
+    }
+
     if (!_initialised) {
       _initialised = true;
-      _fromId = ref.read(currentUserIdProvider) ?? members.first.id;
+      final me = ref.read(currentUserIdProvider);
+      _fromId = me != null && group.memberIds.contains(me)
+          ? me
+          : members.first.id;
       _toId = members.firstWhere((m) => m.id != _fromId).id;
     }
     final currency = Currency.fromCode(group.currencyCode);
@@ -69,13 +84,16 @@ class _SettleUpScreenState extends ConsumerState<SettleUpScreen> {
             onPick: (edge) => setState(() {
               _fromId = edge.fromUserId;
               _toId = edge.toUserId;
-              _amountController.text =
-                  edge.amount.asMajor.toStringAsFixed(currency.decimalDigits);
+              _amountController.text = edge.amount.asMajor.toStringAsFixed(
+                currency.decimalDigits,
+              );
             }),
           ),
           const SizedBox(height: 24),
-          Text('Record a payment',
-              style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            'Record a payment',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 16),
           _PersonDropdown(
             label: 'From',
@@ -85,8 +103,10 @@ class _SettleUpScreenState extends ConsumerState<SettleUpScreen> {
           ),
           const SizedBox(height: 12),
           Center(
-            child: Icon(Icons.arrow_downward,
-                color: Theme.of(context).colorScheme.outline),
+            child: Icon(
+              Icons.arrow_downward,
+              color: Theme.of(context).colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 12),
           _PersonDropdown(
@@ -103,8 +123,7 @@ class _SettleUpScreenState extends ConsumerState<SettleUpScreen> {
               prefixText: '${currency.symbol} ',
               prefixIcon: const Icon(Icons.payments_outlined),
             ),
-            keyboardType:
-                const TextInputType.numberWithOptions(decimal: true),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
             ],
@@ -150,10 +169,15 @@ class _SettleUpScreenState extends ConsumerState<SettleUpScreen> {
       createdAt: DateTime.now(),
     );
 
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     setState(() => _submitting = true);
     try {
       await ref.read(expenseRepositoryProvider).addSettlement(settlement);
-      if (mounted) Navigator.of(context).pop();
+      navigator.pop();
+      messenger.showSnackBar(const SnackBar(content: Text('Payment recorded')));
+    } on Object catch (e) {
+      _showError('Could not record payment: $e');
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -188,8 +212,10 @@ class _SuggestionList extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Suggested payments',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Suggested payments',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 8),
             for (final edge in edges)
               Card(
@@ -198,7 +224,9 @@ class _SuggestionList extends StatelessWidget {
                   onTap: () => onPick(edge),
                   leading: directory[edge.fromUserId] != null
                       ? UserAvatar(
-                          user: directory[edge.fromUserId]!, radius: 16)
+                          user: directory[edge.fromUserId]!,
+                          radius: 16,
+                        )
                       : null,
                   title: Text(
                     '${directory[edge.fromUserId]?.name ?? '—'} → '

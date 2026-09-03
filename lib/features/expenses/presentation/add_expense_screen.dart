@@ -105,8 +105,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 prefixIcon: Icon(Icons.notes),
               ),
               textCapitalization: TextCapitalization.sentences,
-              validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? 'Enter a description' : null,
+              validator: (v) => (v == null || v.trim().isEmpty)
+                  ? 'Enter a description'
+                  : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -116,8 +117,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 prefixText: '${currency.symbol} ',
                 prefixIcon: const Icon(Icons.payments_outlined),
               ),
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
               ],
@@ -139,15 +141,12 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             const SizedBox(height: 8),
             SegmentedButton<SplitType>(
               segments: const [
-                ButtonSegment(
-                    value: SplitType.equal, label: Text('Equally')),
+                ButtonSegment(value: SplitType.equal, label: Text('Equally')),
                 ButtonSegment(value: SplitType.exact, label: Text('Exact')),
-                ButtonSegment(
-                    value: SplitType.percent, label: Text('Percent')),
+                ButtonSegment(value: SplitType.percent, label: Text('Percent')),
               ],
               selected: {_splitType},
-              onSelectionChanged: (s) =>
-                  setState(() => _splitType = s.first),
+              onSelectionChanged: (s) => setState(() => _splitType = s.first),
             ),
             const SizedBox(height: 16),
             _buildSplitEditor(members, currency),
@@ -177,30 +176,30 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     final total = _totalMinorUnits(currency);
     return switch (_splitType) {
       SplitType.equal => _EqualSplitInfo(
-          members: members,
-          participants: _participants,
-          total: total,
-          currency: currency,
-          onToggle: (id, on) => setState(() {
-            if (on) {
-              _participants.add(id);
-            } else {
-              _participants.remove(id);
-            }
-          }),
-        ),
+        members: members,
+        participants: _participants,
+        total: total,
+        currency: currency,
+        onToggle: (id, on) => setState(() {
+          if (on) {
+            _participants.add(id);
+          } else {
+            _participants.remove(id);
+          }
+        }),
+      ),
       SplitType.exact => _ExactSplitEditor(
-          members: members,
-          controllers: _exactControllers,
-          currency: currency,
-          total: total,
-          onChanged: () => setState(() {}),
-        ),
+        members: members,
+        controllers: _exactControllers,
+        currency: currency,
+        total: total,
+        onChanged: () => setState(() {}),
+      ),
       SplitType.percent => _PercentSplitEditor(
-          members: members,
-          controllers: _percentControllers,
-          onChanged: () => setState(() {}),
-        ),
+        members: members,
+        controllers: _percentControllers,
+        onChanged: () => setState(() {}),
+      ),
     };
   }
 
@@ -223,10 +222,15 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       return;
     }
 
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     setState(() => _submitting = true);
     try {
       await ref.read(expenseRepositoryProvider).addExpense(expense);
-      if (mounted) Navigator.of(context).pop();
+      navigator.pop();
+      messenger.showSnackBar(const SnackBar(content: Text('Expense added')));
+    } on Object catch (e) {
+      _showError('Could not save expense: $e');
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -323,12 +327,10 @@ class _Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text,
-        style: Theme.of(context)
-            .textTheme
-            .titleSmall
-            ?.copyWith(fontWeight: FontWeight.w600),
-      );
+    text,
+    style: Theme.of(context).textTheme.titleSmall
+        ?.copyWith(fontWeight: FontWeight.w600),
+  );
 }
 
 class _PayerSelector extends StatelessWidget {
@@ -388,10 +390,8 @@ class _EqualSplitInfo extends StatelessWidget {
           each == null
               ? 'Select who shares this expense'
               : 'Split ${_fmt(Money(total!, currency))} between $count '
-                  '· about ${_fmt(each)} each',
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
+                    '· about ${_fmt(each)} each',
+          style: Theme.of(context).textTheme.bodySmall
               ?.copyWith(color: Theme.of(context).colorScheme.outline),
         ),
         const SizedBox(height: 8),
@@ -407,7 +407,8 @@ class _EqualSplitInfo extends StatelessWidget {
     );
   }
 
-  String _fmt(Money m) => '${currency.symbol}${m.asMajor.toStringAsFixed(currency.decimalDigits)}';
+  String _fmt(Money m) =>
+      '${currency.symbol}${m.asMajor.toStringAsFixed(currency.decimalDigits)}';
 }
 
 class _ExactSplitEditor extends StatelessWidget {
@@ -450,7 +451,8 @@ class _ExactSplitEditor extends StatelessWidget {
                     controller: controllers[m.id],
                     textAlign: TextAlign.end,
                     keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true),
+                      decimal: true,
+                    ),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                     ],
@@ -469,8 +471,8 @@ class _ExactSplitEditor extends StatelessWidget {
           text: total == null
               ? 'Enter the total amount first'
               : remaining == 0
-                  ? 'Shares add up 🎉'
-                  : '${currency.symbol}${(remaining / currency.minorUnitsPerMajor).toStringAsFixed(currency.decimalDigits)} left to assign',
+              ? 'Shares add up 🎉'
+              : '${currency.symbol}${(remaining / currency.minorUnitsPerMajor).toStringAsFixed(currency.decimalDigits)} left to assign',
         ),
       ],
     );
@@ -513,7 +515,8 @@ class _PercentSplitEditor extends StatelessWidget {
                     controller: controllers[m.id],
                     textAlign: TextAlign.end,
                     keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true),
+                      decimal: true,
+                    ),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                     ],
@@ -551,8 +554,11 @@ class _RemainingHint extends StatelessWidget {
       padding: const EdgeInsets.only(top: 4),
       child: Row(
         children: [
-          Icon(ok ? Icons.check_circle : Icons.info_outline,
-              size: 16, color: color),
+          Icon(
+            ok ? Icons.check_circle : Icons.info_outline,
+            size: 16,
+            color: color,
+          ),
           const SizedBox(width: 6),
           Text(text, style: TextStyle(color: color, fontSize: 12)),
         ],
