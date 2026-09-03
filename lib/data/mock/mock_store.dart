@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../../features/auth/domain/entities/app_user.dart';
+import '../../features/budgets/domain/entities/budget.dart';
 import '../../features/expenses/domain/entities/expense.dart';
 import '../../features/expenses/domain/entities/settlement.dart';
 import '../../features/groups/domain/entities/group.dart';
@@ -15,6 +16,7 @@ class MockSnapshot {
     required this.expenses,
     required this.settlements,
     required this.friendships,
+    required this.budgets,
   });
 
   final String? currentUserId;
@@ -22,6 +24,7 @@ class MockSnapshot {
   final List<Group> groups;
   final List<Expense> expenses;
   final List<Settlement> settlements;
+  final List<Budget> budgets;
 
   /// userId -> set of friend userIds (symmetric).
   final Map<String, Set<String>> friendships;
@@ -44,6 +47,7 @@ class MockStore {
   final List<Group> _groups = [];
   final List<Expense> _expenses = [];
   final List<Settlement> _settlements = [];
+  final List<Budget> _budgets = [];
   final Map<String, Set<String>> _friendships = {};
 
   final StreamController<MockSnapshot> _controller =
@@ -58,6 +62,7 @@ class MockStore {
     _groups.addAll(seedGroups);
     _expenses.addAll(seedExpenses);
     _settlements.addAll(seedSettlements);
+    _budgets.addAll(seedBudgets);
     _friendships.addAll(buildSeedFriendships());
     _currentUserId = seedUsers.first.id;
   }
@@ -68,6 +73,7 @@ class MockStore {
     groups: List.unmodifiable(_groups),
     expenses: List.unmodifiable(_expenses),
     settlements: List.unmodifiable(_settlements),
+    budgets: List.unmodifiable(_budgets),
     friendships: {
       for (final e in _friendships.entries) e.key: Set.unmodifiable(e.value),
     },
@@ -147,6 +153,22 @@ class MockStore {
     _settlements.add(settlement);
     _emit();
     return settlement;
+  }
+
+  Future<void> setBudget(Budget budget) async {
+    await Future<void>.delayed(latency);
+    // Upsert: one budget per (user, category).
+    _budgets.removeWhere(
+      (b) => b.userId == budget.userId && b.category == budget.category,
+    );
+    _budgets.add(budget);
+    _emit();
+  }
+
+  Future<void> removeBudget(String budgetId) async {
+    await Future<void>.delayed(latency);
+    _budgets.removeWhere((b) => b.id == budgetId);
+    _emit();
   }
 
   Future<void> dispose() => _controller.close();

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/activity/presentation/activity_screen.dart';
+import '../features/analytics/presentation/insights_screen.dart';
+import '../features/budgets/presentation/budgets_screen.dart';
 import '../features/expenses/presentation/add_expense_screen.dart';
 import '../features/expenses/presentation/settle_up_screen.dart';
 import '../features/groups/presentation/create_group_screen.dart';
@@ -14,6 +16,8 @@ import 'home_shell.dart';
 /// strings scattered around.
 abstract final class AppRoutes {
   static const groups = '/groups';
+  static const insights = '/insights';
+  static const budgets = '/insights/budgets';
   static const activity = '/activity';
   static const profile = '/profile';
   static const newGroup = '/groups/new';
@@ -69,6 +73,21 @@ GoRouter buildRouter() {
                         ),
                       ),
                     ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.insights,
+                builder: (context, state) => const InsightsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'budgets',
+                    parentNavigatorKey: _rootKey,
+                    builder: (context, state) => const BudgetsScreen(),
                   ),
                 ],
               ),

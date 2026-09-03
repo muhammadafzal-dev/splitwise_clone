@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 
 import '../../features/auth/data/firebase_auth_repository.dart';
+import '../../features/budgets/data/firebase_budget_repository.dart';
 import '../../features/expenses/data/firebase_expense_repository.dart';
 import '../../features/friends/data/firebase_friend_repository.dart';
 import '../../features/groups/data/firebase_group_repository.dart';
@@ -34,6 +35,9 @@ Future<List<Override>> initializeFirebaseBackend() async {
     ),
     expenseRepositoryProvider.overrideWithValue(
       FirebaseExpenseRepository(firestore),
+    ),
+    budgetRepositoryProvider.overrideWithValue(
+      FirebaseBudgetRepository(firestore),
     ),
   ];
 }

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../features/auth/domain/entities/app_user.dart';
+import '../../features/budgets/domain/entities/budget.dart';
 import '../../features/expenses/domain/entities/expense.dart';
+import '../../features/expenses/domain/entities/expense_category.dart';
 import '../../features/expenses/domain/entities/settlement.dart';
 import '../../features/expenses/domain/entities/split_type.dart';
 import '../../features/groups/domain/entities/group.dart';
@@ -70,6 +72,7 @@ class FirestoreMappers {
       exactShares: _intMap(data['exactShares']),
       percentShares: _intMap(data['percentShares']),
       createdAt: _dateTime(data['createdAt']),
+      category: ExpenseCategory.fromName(data['category'] as String?),
     );
   }
 
@@ -84,9 +87,31 @@ class FirestoreMappers {
     if (expense.exactShares != null) 'exactShares': expense.exactShares,
     if (expense.percentShares != null) 'percentShares': expense.percentShares,
     'createdAt': Timestamp.fromDate(expense.createdAt),
+    'category': expense.category.name,
     // Denormalised so a single collection query can fetch everything that
     // affects a user's balance (payer + participants).
     'involvedIds': {expense.payerId, ...expense.participantIds}.toList(),
+  };
+
+  // --- Budget ----------------------------------------------------------------
+
+  static Budget budgetFromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data() ?? const {};
+    return Budget(
+      id: doc.id,
+      userId: (data['userId'] as String?) ?? '',
+      category: ExpenseCategory.fromName(data['category'] as String?),
+      monthlyLimitMinorUnits:
+          (data['monthlyLimitMinorUnits'] as num?)?.toInt() ?? 0,
+      currencyCode: (data['currencyCode'] as String?) ?? 'USD',
+    );
+  }
+
+  static Map<String, dynamic> budgetToMap(Budget budget) => {
+    'userId': budget.userId,
+    'category': budget.category.name,
+    'monthlyLimitMinorUnits': budget.monthlyLimitMinorUnits,
+    'currencyCode': budget.currencyCode,
   };
 
   // --- Settlement ------------------------------------------------------------

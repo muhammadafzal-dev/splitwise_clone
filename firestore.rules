@@ -44,5 +44,14 @@ service cloud.firestore {
       allow create: if isMemberOf(request.resource.data.groupId);
       allow update, delete: if isMemberOf(resource.data.groupId);
     }
+
+    // Budgets: strictly private to their owner.
+    match /budgets/{budgetId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn()
+                    && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if signedIn()
+                            && resource.data.userId == request.auth.uid;
+    }
   }
 }

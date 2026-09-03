@@ -7,10 +7,18 @@ All notable changes to this project are documented here. The format is based on
 ## [Unreleased]
 
 ### Added
+- **Expense tracking layer:**
+  - Expense **categories** (10 categories with icons/colours) + category picker.
+  - **Search & filter** a group's expenses by text and category.
+  - **Insights** tab: total spent, spend-by-category donut, monthly bars —
+    powered by a pure, unit-tested `SpendingAnalyzer`.
+  - **Monthly budgets** per category with live progress and over-budget warnings
+    (new `BudgetRepository`, mock + Firebase).
+  - **Personal (solo) expenses** via a private per-user ledger.
 - Expense detail sheet showing the full per-person split breakdown.
 - Professional repo scaffolding: MIT license, CI (analyze + test + web build),
   contribution guide, issue/PR templates.
-- Widget smoke test and mock-repository tests.
+- Widget smoke test, mock-repository tests, and `SpendingAnalyzer` tests.
 
 ### Changed
 - Refresh keeps existing content visible instead of flashing a loading spinner.

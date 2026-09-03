@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/mock/mock_store.dart';
 import '../features/auth/data/mock_auth_repository.dart';
 import '../features/auth/domain/auth_repository.dart';
+import '../features/budgets/data/mock_budget_repository.dart';
+import '../features/budgets/domain/budget_repository.dart';
 import '../features/expenses/data/mock_expense_repository.dart';
 import '../features/expenses/domain/expense_repository.dart';
 import '../features/friends/data/mock_friend_repository.dart';
@@ -39,4 +41,8 @@ final groupRepositoryProvider = Provider<GroupRepository>(
 
 final expenseRepositoryProvider = Provider<ExpenseRepository>(
   (ref) => MockExpenseRepository(ref.watch(mockStoreProvider)),
+);
+
+final budgetRepositoryProvider = Provider<BudgetRepository>(
+  (ref) => MockBudgetRepository(ref.watch(mockStoreProvider)),
 );

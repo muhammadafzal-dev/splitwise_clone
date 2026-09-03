@@ -1,8 +1,11 @@
 import '../../features/auth/domain/entities/app_user.dart';
+import '../../features/budgets/domain/entities/budget.dart';
 import '../../features/expenses/domain/entities/expense.dart';
+import '../../features/expenses/domain/entities/expense_category.dart';
 import '../../features/expenses/domain/entities/settlement.dart';
 import '../../features/expenses/domain/entities/split_type.dart';
 import '../../features/groups/domain/entities/group.dart';
+import '../../features/groups/domain/personal_group.dart';
 
 /// Demo users. `alice` is the default signed-in user.
 const seedUsers = <AppUser>[
@@ -49,6 +52,15 @@ final seedGroups = <Group>[
     currencyCode: 'USD',
     createdAt: DateTime(2026, 8, 20),
   ),
+  // Alice's personal ledger (solo expenses).
+  Group(
+    id: 'g_personal_u_alice',
+    name: PersonalGroup.name,
+    emoji: PersonalGroup.emoji,
+    memberIds: const ['u_alice'],
+    currencyCode: 'USD',
+    createdAt: DateTime(2026, 8, 1),
+  ),
 ];
 
 /// Amounts are minor units (cents). Mixed split types so balances are
@@ -65,6 +77,7 @@ final seedExpenses = <Expense>[
     splitType: SplitType.equal,
     participantIds: const ['u_alice', 'u_bob', 'u_carol'],
     createdAt: DateTime(2026, 8, 1, 9),
+    category: ExpenseCategory.rent,
   ),
   Expense(
     id: 'x_groceries',
@@ -76,6 +89,7 @@ final seedExpenses = <Expense>[
     splitType: SplitType.equal,
     participantIds: const ['u_alice', 'u_bob', 'u_carol'],
     createdAt: DateTime(2026, 8, 24, 18, 30),
+    category: ExpenseCategory.groceries,
   ),
   Expense(
     id: 'x_internet',
@@ -88,6 +102,7 @@ final seedExpenses = <Expense>[
     participantIds: const ['u_alice', 'u_bob', 'u_carol'],
     exactShares: const {'u_alice': 3000, 'u_bob': 1500, 'u_carol': 1500},
     createdAt: DateTime(2026, 8, 28, 12),
+    category: ExpenseCategory.utilities,
   ),
   // --- Kyoto Trip ---
   Expense(
@@ -101,6 +116,7 @@ final seedExpenses = <Expense>[
     participantIds: const ['u_alice', 'u_bob', 'u_dave'],
     percentShares: const {'u_alice': 4000, 'u_bob': 3000, 'u_dave': 3000},
     createdAt: DateTime(2026, 8, 21, 15),
+    category: ExpenseCategory.travel,
   ),
   Expense(
     id: 'x_dinner',
@@ -112,6 +128,7 @@ final seedExpenses = <Expense>[
     splitType: SplitType.equal,
     participantIds: const ['u_alice', 'u_bob', 'u_dave'],
     createdAt: DateTime(2026, 8, 22, 20),
+    category: ExpenseCategory.food,
   ),
   Expense(
     id: 'x_train',
@@ -124,6 +141,69 @@ final seedExpenses = <Expense>[
     participantIds: const ['u_alice', 'u_bob', 'u_dave'],
     exactShares: const {'u_alice': 3000, 'u_bob': 3000, 'u_dave': 3000},
     createdAt: DateTime(2026, 8, 23, 8),
+    category: ExpenseCategory.transport,
+  ),
+  // --- Alice's personal (solo) expenses ---
+  Expense(
+    id: 'x_p_coffee',
+    groupId: 'g_personal_u_alice',
+    description: 'Morning coffee',
+    payerId: 'u_alice',
+    amountMinorUnits: 650, // $6.50
+    currencyCode: 'USD',
+    splitType: SplitType.equal,
+    participantIds: const ['u_alice'],
+    createdAt: DateTime(2026, 8, 25, 8),
+    category: ExpenseCategory.food,
+  ),
+  Expense(
+    id: 'x_p_gym',
+    groupId: 'g_personal_u_alice',
+    description: 'Gym membership',
+    payerId: 'u_alice',
+    amountMinorUnits: 4500, // $45.00
+    currencyCode: 'USD',
+    splitType: SplitType.equal,
+    participantIds: const ['u_alice'],
+    createdAt: DateTime(2026, 8, 26, 7),
+    category: ExpenseCategory.health,
+  ),
+  Expense(
+    id: 'x_p_books',
+    groupId: 'g_personal_u_alice',
+    description: 'Books',
+    payerId: 'u_alice',
+    amountMinorUnits: 3200, // $32.00
+    currencyCode: 'USD',
+    splitType: SplitType.equal,
+    participantIds: const ['u_alice'],
+    createdAt: DateTime(2026, 8, 27, 19),
+    category: ExpenseCategory.shopping,
+  ),
+];
+
+/// Demo monthly budgets for Alice.
+final seedBudgets = <Budget>[
+  const Budget(
+    id: 'b_food',
+    userId: 'u_alice',
+    category: ExpenseCategory.food,
+    monthlyLimitMinorUnits: 20000, // $200
+    currencyCode: 'USD',
+  ),
+  const Budget(
+    id: 'b_transport',
+    userId: 'u_alice',
+    category: ExpenseCategory.transport,
+    monthlyLimitMinorUnits: 8000, // $80
+    currencyCode: 'USD',
+  ),
+  const Budget(
+    id: 'b_shopping',
+    userId: 'u_alice',
+    category: ExpenseCategory.shopping,
+    monthlyLimitMinorUnits: 15000, // $150
+    currencyCode: 'USD',
   ),
 ];
 

@@ -64,9 +64,13 @@ flutter run --dart-define=USE_FIREBASE=true
 | **Auth** | Switch between demo users (mock stand-in for Firebase Auth) |
 | **Friends** | Per-user friend list |
 | **Groups** | Create groups, add members, per-group emoji + currency |
-| **Expenses** | Payer, amount, participants, split **EQUAL / EXACT / PERCENT** with live validation |
-| **Balances** | Net "who owes whom" per group **and** overall |
+| **Expenses** | Payer, amount, participants, **category**, split **EQUAL / EXACT / PERCENT** with live validation |
+| **Balances** | Net "who owes whom" per group **and** overall (per-currency) |
 | **Settle up** | Suggested minimal payments + record a payment |
+| **Search & filter** | Filter a group's expenses by text and category |
+| **Insights** | Total spent, spend-by-category donut, monthly bars — from a pure, tested analyzer |
+| **Budgets** | Monthly limit per category with live progress + over-budget warnings |
+| **Personal expenses** | Log solo (non-split) expenses in a private ledger; counted in Insights |
 | **Activity** | Unified feed of expenses and settlements |
 | **Profile** | Current user, friends, user switcher |
 

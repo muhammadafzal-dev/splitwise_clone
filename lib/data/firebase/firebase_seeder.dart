@@ -48,6 +48,12 @@ class FirebaseSeeder {
         FirestoreMappers.settlementToMap(settlement),
       );
     }
+    for (final budget in seedBudgets) {
+      batch.set(
+        _firestore.collection('budgets').doc(budget.id),
+        FirestoreMappers.budgetToMap(budget),
+      );
+    }
 
     await batch.commit();
   }
