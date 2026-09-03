@@ -1,0 +1,48 @@
+rules_version = '2';
+
+// Security rules for the Splitwise-clone data model.
+// Principle: a user may only read/write data for groups they are a member of,
+// and may only edit their own user profile.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isMemberOf(groupId) {
+      return signedIn() &&
+        request.auth.uid in get(/databases/$(database)/documents/groups/$(groupId)).data.memberIds;
+    }
+
+    // Users can read any profile (to resolve names/avatars) but only write
+    // their own.
+    match /users/{userId} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == userId;
+    }
+
+    // Groups: readable/writable by members. Creating requires the creator to be
+    // in the members list.
+    match /groups/{groupId} {
+      allow read: if signedIn() && request.auth.uid in resource.data.memberIds;
+      allow create: if signedIn() && request.auth.uid in request.resource.data.memberIds;
+      allow update, delete: if signedIn() && request.auth.uid in resource.data.memberIds;
+    }
+
+    // Expenses: only members of the owning group.
+    match /expenses/{expenseId} {
+      allow read: if isMemberOf(resource.data.groupId);
+      allow create: if isMemberOf(request.resource.data.groupId)
+                    && request.auth.uid in request.resource.data.involvedIds;
+      allow update, delete: if isMemberOf(resource.data.groupId);
+    }
+
+    // Settlements: only members of the owning group.
+    match /settlements/{settlementId} {
+      allow read: if isMemberOf(resource.data.groupId);
+      allow create: if isMemberOf(request.resource.data.groupId);
+      allow update, delete: if isMemberOf(resource.data.groupId);
+    }
+  }
+}
