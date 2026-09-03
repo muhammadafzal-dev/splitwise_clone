@@ -1,0 +1,42 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../data/mock/mock_store.dart';
+import '../features/auth/data/mock_auth_repository.dart';
+import '../features/auth/domain/auth_repository.dart';
+import '../features/expenses/data/mock_expense_repository.dart';
+import '../features/expenses/domain/expense_repository.dart';
+import '../features/friends/data/mock_friend_repository.dart';
+import '../features/friends/domain/friend_repository.dart';
+import '../features/groups/data/mock_group_repository.dart';
+import '../features/groups/domain/group_repository.dart';
+
+/// ─────────────────────────────────────────────────────────────────────────
+/// THE SWAP POINT.
+///
+/// Every repository is exposed here as its domain interface, built from the
+/// in-memory [MockStore]. To move to Firebase later, write `Firebase*Repository`
+/// implementations of the same interfaces and override these four providers in
+/// `ProviderScope(overrides: [...])` — no UI or domain code changes.
+/// ─────────────────────────────────────────────────────────────────────────
+
+final mockStoreProvider = Provider<MockStore>((ref) {
+  final store = MockStore()..seed();
+  ref.onDispose(store.dispose);
+  return store;
+});
+
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => MockAuthRepository(ref.watch(mockStoreProvider)),
+);
+
+final friendRepositoryProvider = Provider<FriendRepository>(
+  (ref) => MockFriendRepository(ref.watch(mockStoreProvider)),
+);
+
+final groupRepositoryProvider = Provider<GroupRepository>(
+  (ref) => MockGroupRepository(ref.watch(mockStoreProvider)),
+);
+
+final expenseRepositoryProvider = Provider<ExpenseRepository>(
+  (ref) => MockExpenseRepository(ref.watch(mockStoreProvider)),
+);
