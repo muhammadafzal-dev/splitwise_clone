@@ -24,6 +24,9 @@ _Expense _$ExpenseFromJson(Map<String, dynamic> json) => _Expense(
   percentShares: (json['percentShares'] as Map<String, dynamic>?)?.map(
     (k, e) => MapEntry(k, (e as num).toInt()),
   ),
+  category:
+      $enumDecodeNullable(_$ExpenseCategoryEnumMap, json['category']) ??
+      ExpenseCategory.other,
 );
 
 Map<String, dynamic> _$ExpenseToJson(_Expense instance) => <String, dynamic>{
@@ -38,10 +41,24 @@ Map<String, dynamic> _$ExpenseToJson(_Expense instance) => <String, dynamic>{
   'createdAt': instance.createdAt.toIso8601String(),
   'exactShares': instance.exactShares,
   'percentShares': instance.percentShares,
+  'category': _$ExpenseCategoryEnumMap[instance.category]!,
 };
 
 const _$SplitTypeEnumMap = {
   SplitType.equal: 'equal',
   SplitType.exact: 'exact',
   SplitType.percent: 'percent',
+};
+
+const _$ExpenseCategoryEnumMap = {
+  ExpenseCategory.food: 'food',
+  ExpenseCategory.groceries: 'groceries',
+  ExpenseCategory.rent: 'rent',
+  ExpenseCategory.utilities: 'utilities',
+  ExpenseCategory.transport: 'transport',
+  ExpenseCategory.entertainment: 'entertainment',
+  ExpenseCategory.travel: 'travel',
+  ExpenseCategory.shopping: 'shopping',
+  ExpenseCategory.health: 'health',
+  ExpenseCategory.other: 'other',
 };

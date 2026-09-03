@@ -7,12 +7,11 @@ import '../../../core/formatting/money_formatter.dart';
 import '../../../core/money/currency.dart';
 import '../../../core/money/money.dart';
 import '../../../core/widgets/async_value_view.dart';
-import '../../../core/widgets/state_views.dart';
 import '../../../core/widgets/user_avatar.dart';
 import '../../auth/application/auth_providers.dart';
 import '../../expenses/application/expense_providers.dart';
 import '../../expenses/domain/entities/expense.dart';
-import '../../expenses/presentation/widgets/expense_tile.dart';
+import '../../expenses/presentation/widgets/expenses_section.dart';
 import '../application/group_providers.dart';
 import '../domain/entities/group.dart';
 import 'widgets/balances_section.dart';
@@ -73,17 +72,7 @@ class GroupDetailScreen extends ConsumerWidget {
               const SizedBox(height: 24),
               const _SectionHeader(title: 'Expenses'),
               const SizedBox(height: 8),
-              if (list.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.only(top: 32),
-                  child: EmptyView(
-                    icon: Icons.receipt_long_outlined,
-                    title: 'No expenses yet',
-                    message: 'Add the first expense for this group.',
-                  ),
-                )
-              else
-                for (final expense in list) ExpenseTile(expense: expense),
+              ExpensesSection(expenses: list),
             ],
           ),
         ),

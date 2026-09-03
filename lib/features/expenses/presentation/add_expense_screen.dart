@@ -14,7 +14,9 @@ import '../../groups/application/group_providers.dart';
 import '../domain/balance/split_calculator.dart';
 import '../domain/balance/split_exception.dart';
 import '../domain/entities/expense.dart';
+import '../domain/entities/expense_category.dart';
 import '../domain/entities/split_type.dart';
+import 'widgets/expense_category_ui.dart';
 
 class AddExpenseScreen extends ConsumerStatefulWidget {
   const AddExpenseScreen({super.key, required this.groupId});
@@ -37,6 +39,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   String? _payerId;
   final Set<String> _participants = {};
   SplitType _splitType = SplitType.equal;
+  ExpenseCategory _category = ExpenseCategory.food;
   bool _submitting = false;
   bool _initialised = false;
 
@@ -127,6 +130,13 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               validator: (_) => _totalMinorUnits(currency) == null
                   ? 'Enter a valid amount'
                   : null,
+            ),
+            const SizedBox(height: 24),
+            const _Label('Category'),
+            const SizedBox(height: 8),
+            _CategorySelector(
+              selected: _category,
+              onChanged: (c) => setState(() => _category = c),
             ),
             const SizedBox(height: 24),
             const _Label('Paid by'),
@@ -311,6 +321,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       exactShares: exactShares,
       percentShares: percentShares,
       createdAt: DateTime.now(),
+      category: _category,
     );
   }
 
@@ -331,6 +342,34 @@ class _Label extends StatelessWidget {
     style: Theme.of(context).textTheme.titleSmall
         ?.copyWith(fontWeight: FontWeight.w600),
   );
+}
+
+class _CategorySelector extends StatelessWidget {
+  const _CategorySelector({required this.selected, required this.onChanged});
+
+  final ExpenseCategory selected;
+  final ValueChanged<ExpenseCategory> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 40,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: ExpenseCategory.values.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
+        itemBuilder: (context, i) {
+          final c = ExpenseCategory.values[i];
+          return ChoiceChip(
+            avatar: Icon(c.icon, size: 18, color: c.color),
+            label: Text(c.label),
+            selected: selected == c,
+            onSelected: (_) => onChanged(c),
+          );
+        },
+      ),
+    );
+  }
 }
 
 class _PayerSelector extends StatelessWidget {

@@ -10,6 +10,7 @@ import '../../../auth/application/auth_providers.dart';
 import '../../../auth/domain/entities/app_user.dart';
 import '../../domain/balance/split_calculator.dart';
 import '../../domain/entities/expense.dart';
+import 'expense_category_ui.dart';
 
 /// Bottom sheet showing an expense's full breakdown: who paid, and exactly what
 /// each participant owes (computed by the same [SplitCalculator] the balances
@@ -50,19 +51,7 @@ class _ExpenseDetailSheet extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.receipt_long,
-                    color: theme.colorScheme.onPrimaryContainer,
-                  ),
-                ),
+                CategoryIcon(category: expense.category, size: 48),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
@@ -73,6 +62,7 @@ class _ExpenseDetailSheet extends ConsumerWidget {
                         style: theme.textTheme.titleLarge,
                       ),
                       Text(
+                        '${expense.category.label} · '
                         '${dateFormatter.medium(expense.createdAt)} · '
                         '${expense.splitType.label}',
                         style: theme.textTheme.bodySmall?.copyWith(

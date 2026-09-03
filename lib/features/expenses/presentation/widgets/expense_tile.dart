@@ -8,6 +8,7 @@ import '../../../../core/widgets/amount_text.dart';
 import '../../../auth/application/auth_providers.dart';
 import '../../domain/balance/split_calculator.dart';
 import '../../domain/entities/expense.dart';
+import 'expense_category_ui.dart';
 import 'expense_detail_sheet.dart';
 
 const _splitCalculator = SplitCalculator();
@@ -31,16 +32,7 @@ class ExpenseTile extends ConsumerWidget {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       onTap: () => showExpenseDetail(context, expense),
-      leading: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        alignment: Alignment.center,
-        child: Icon(Icons.receipt_long, color: theme.colorScheme.primary),
-      ),
+      leading: CategoryIcon(category: expense.category),
       title: Text(
         expense.description,
         style: theme.textTheme.titleMedium,

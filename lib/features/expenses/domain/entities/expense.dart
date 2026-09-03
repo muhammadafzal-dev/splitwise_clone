@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/money/currency.dart';
 import '../../../../core/money/money.dart';
+import 'expense_category.dart';
 import 'split_type.dart';
 
 part 'expense.freezed.dart';
@@ -34,6 +35,9 @@ abstract class Expense with _$Expense {
 
     /// PERCENT split: userId -> basis points (10000 == 100%). Null otherwise.
     Map<String, int>? percentShares,
+
+    /// Spending category. Defaults to [ExpenseCategory.other] for older data.
+    @Default(ExpenseCategory.other) ExpenseCategory category,
   }) = _Expense;
 
   factory Expense.fromJson(Map<String, dynamic> json) =>
