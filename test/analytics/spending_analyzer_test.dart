@@ -126,6 +126,66 @@ void main() {
     });
   });
 
+  group('SpendingAnalyzer.totalSpentBetween', () {
+    test('should_include_only_the_half_open_window', () {
+      final expenses = [
+        equalExpense(
+          payer: 'a',
+          amount: 100,
+          participants: ['a'],
+          createdAt: DateTime(2026, 8, 1), // == from -> included
+        ),
+        equalExpense(
+          id: 'e2',
+          payer: 'a',
+          amount: 200,
+          participants: ['a'],
+          createdAt: DateTime(2026, 8, 15), // inside -> included
+        ),
+        equalExpense(
+          id: 'e3',
+          payer: 'a',
+          amount: 400,
+          participants: ['a'],
+          createdAt: DateTime(2026, 9, 1), // == to -> excluded
+        ),
+        equalExpense(
+          id: 'e4',
+          payer: 'a',
+          amount: 800,
+          participants: ['a'],
+          createdAt: DateTime(2026, 7, 20), // before from -> excluded
+        ),
+      ];
+      final spent = analyzer.totalSpentBetween(
+        expenses: expenses,
+        userId: 'a',
+        currency: usd,
+        from: DateTime(2026, 8, 1),
+        to: DateTime(2026, 9, 1),
+      );
+      expect(spent.minorUnits, 300);
+    });
+
+    test('should_be_open_ended_when_to_is_null', () {
+      final expenses = [
+        equalExpense(
+          payer: 'a',
+          amount: 500,
+          participants: ['a'],
+          createdAt: DateTime(2026, 8, 10),
+        ),
+      ];
+      final spent = analyzer.totalSpentBetween(
+        expenses: expenses,
+        userId: 'a',
+        currency: usd,
+        from: DateTime(2026, 8, 1),
+      );
+      expect(spent.minorUnits, 500);
+    });
+  });
+
   group('SpendingAnalyzer.spentInCategory', () {
     test('should_sum_only_matching_category_and_month', () {
       final spent = analyzer.spentInCategory(

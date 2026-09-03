@@ -11,6 +11,8 @@ import '../features/friends/data/mock_friend_repository.dart';
 import '../features/friends/domain/friend_repository.dart';
 import '../features/groups/data/mock_group_repository.dart';
 import '../features/groups/domain/group_repository.dart';
+import '../features/salary/data/mock_salary_repository.dart';
+import '../features/salary/domain/salary_repository.dart';
 
 /// ─────────────────────────────────────────────────────────────────────────
 /// THE SWAP POINT.
@@ -45,4 +47,8 @@ final expenseRepositoryProvider = Provider<ExpenseRepository>(
 
 final budgetRepositoryProvider = Provider<BudgetRepository>(
   (ref) => MockBudgetRepository(ref.watch(mockStoreProvider)),
+);
+
+final salaryRepositoryProvider = Provider<SalaryRepository>(
+  (ref) => MockSalaryRepository(ref.watch(mockStoreProvider)),
 );

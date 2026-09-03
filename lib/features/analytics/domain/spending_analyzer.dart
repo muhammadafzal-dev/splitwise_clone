@@ -79,6 +79,26 @@ class SpendingAnalyzer {
     return {for (final k in keys) k: Money(totals[k]!, currency)};
   }
 
+  /// The user's total spend in the half-open window `[from, to)`. If [to] is
+  /// null the window is open-ended (up to now). Used for salary-cycle tracking.
+  Money totalSpentBetween({
+    required List<Expense> expenses,
+    required String userId,
+    required Currency currency,
+    required DateTime from,
+    DateTime? to,
+  }) {
+    var total = 0;
+    for (final e in expenses) {
+      if (e.currency != currency) continue;
+      final at = e.createdAt;
+      if (at.isBefore(from)) continue;
+      if (to != null && !at.isBefore(to)) continue;
+      total += shareOf(e, userId);
+    }
+    return Money(total, currency);
+  }
+
   /// The user's spend in [category] during the month containing [month].
   Money spentInCategory({
     required List<Expense> expenses,

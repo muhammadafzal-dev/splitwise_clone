@@ -6,6 +6,7 @@ import '../../features/expenses/domain/entities/settlement.dart';
 import '../../features/expenses/domain/entities/split_type.dart';
 import '../../features/groups/domain/entities/group.dart';
 import '../../features/groups/domain/personal_group.dart';
+import '../../features/salary/domain/entities/salary_cycle.dart';
 
 /// Demo users. `alice` is the default signed-in user.
 const seedUsers = <AppUser>[
@@ -179,6 +180,17 @@ final seedExpenses = <Expense>[
     participantIds: const ['u_alice'],
     createdAt: DateTime(2026, 8, 27, 19),
     category: ExpenseCategory.shopping,
+  ),
+];
+
+/// Alice's active salary cycle (this pay period).
+final seedSalaryCycles = <SalaryCycle>[
+  SalaryCycle(
+    id: 'sc_alice_aug',
+    userId: 'u_alice',
+    incomeMinorUnits: 400000, // $4,000 salary
+    currencyCode: 'USD',
+    startedAt: DateTime(2026, 8, 1),
   ),
 ];
 

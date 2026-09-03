@@ -54,6 +54,12 @@ class FirebaseSeeder {
         FirestoreMappers.budgetToMap(budget),
       );
     }
+    for (final cycle in seedSalaryCycles) {
+      batch.set(
+        _firestore.collection('salaryCycles').doc(cycle.id),
+        FirestoreMappers.salaryCycleToMap(cycle),
+      );
+    }
 
     await batch.commit();
   }

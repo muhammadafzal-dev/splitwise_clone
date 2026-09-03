@@ -8,6 +8,7 @@ import '../../features/budgets/data/firebase_budget_repository.dart';
 import '../../features/expenses/data/firebase_expense_repository.dart';
 import '../../features/friends/data/firebase_friend_repository.dart';
 import '../../features/groups/data/firebase_group_repository.dart';
+import '../../features/salary/data/firebase_salary_repository.dart';
 import '../providers.dart';
 
 /// Initialises Firebase and returns the provider overrides that replace the
@@ -38,6 +39,9 @@ Future<List<Override>> initializeFirebaseBackend() async {
     ),
     budgetRepositoryProvider.overrideWithValue(
       FirebaseBudgetRepository(firestore),
+    ),
+    salaryRepositoryProvider.overrideWithValue(
+      FirebaseSalaryRepository(firestore),
     ),
   ];
 }

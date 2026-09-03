@@ -7,6 +7,8 @@ import '../../features/expenses/domain/entities/expense_category.dart';
 import '../../features/expenses/domain/entities/settlement.dart';
 import '../../features/expenses/domain/entities/split_type.dart';
 import '../../features/groups/domain/entities/group.dart';
+import '../../features/salary/domain/entities/cycle_disposition.dart';
+import '../../features/salary/domain/entities/salary_cycle.dart';
 
 /// Converts between domain entities and Firestore documents.
 ///
@@ -115,6 +117,38 @@ class FirestoreMappers {
     'category': budget.category.name,
     'monthlyLimitMinorUnits': budget.monthlyLimitMinorUnits,
     'currencyCode': budget.currencyCode,
+  };
+
+  // --- Salary cycle ----------------------------------------------------------
+
+  static SalaryCycle salaryCycleFromDoc(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
+    final data = doc.data() ?? const {};
+    final endedAt = data['endedAt'];
+    final disposition = data['disposition'] as String?;
+    return SalaryCycle(
+      id: doc.id,
+      userId: (data['userId'] as String?) ?? '',
+      incomeMinorUnits: (data['incomeMinorUnits'] as num?)?.toInt() ?? 0,
+      currencyCode: (data['currencyCode'] as String?) ?? 'USD',
+      startedAt: _dateTime(data['startedAt']),
+      endedAt: endedAt == null ? null : _dateTime(endedAt),
+      savedMinorUnits: (data['savedMinorUnits'] as num?)?.toInt() ?? 0,
+      disposition: disposition == null
+          ? null
+          : CycleDisposition.fromName(disposition),
+    );
+  }
+
+  static Map<String, dynamic> salaryCycleToMap(SalaryCycle cycle) => {
+    'userId': cycle.userId,
+    'incomeMinorUnits': cycle.incomeMinorUnits,
+    'currencyCode': cycle.currencyCode,
+    'startedAt': Timestamp.fromDate(cycle.startedAt),
+    if (cycle.endedAt != null) 'endedAt': Timestamp.fromDate(cycle.endedAt!),
+    'savedMinorUnits': cycle.savedMinorUnits,
+    if (cycle.disposition != null) 'disposition': cycle.disposition!.name,
   };
 
   // --- Settlement ------------------------------------------------------------

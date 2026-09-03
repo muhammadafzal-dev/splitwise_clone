@@ -10,6 +10,7 @@ import '../features/groups/presentation/create_group_screen.dart';
 import '../features/groups/presentation/group_detail_screen.dart';
 import '../features/groups/presentation/groups_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
+import '../features/salary/presentation/salary_screen.dart';
 import 'home_shell.dart';
 
 /// Route paths in one place so screens can navigate by name without magic
@@ -18,6 +19,7 @@ abstract final class AppRoutes {
   static const groups = '/groups';
   static const insights = '/insights';
   static const budgets = '/insights/budgets';
+  static const salary = '/insights/salary';
   static const activity = '/activity';
   static const profile = '/profile';
   static const newGroup = '/groups/new';
@@ -88,6 +90,11 @@ GoRouter buildRouter() {
                     path: 'budgets',
                     parentNavigatorKey: _rootKey,
                     builder: (context, state) => const BudgetsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'salary',
+                    parentNavigatorKey: _rootKey,
+                    builder: (context, state) => const SalaryScreen(),
                   ),
                 ],
               ),

@@ -7,6 +7,13 @@ All notable changes to this project are documented here. The format is based on
 ## [Unreleased]
 
 ### Added
+- **Salary & savings:** add a salary to start a pay cycle; when the next salary
+  arrives the current cycle is closed (leftover moved to savings or marked used)
+  and a new cycle starts. Running savings total + cycle history. New
+  `SalaryRepository` (mock + Firebase) and a date-range method on the tested
+  `SpendingAnalyzer`.
+- **Currency manager:** added PKR; per-user preferred currency (default for new
+  groups/budgets/personal/salary) and a per-group currency picker.
 - **Expense tracking layer:**
   - Expense **categories** (10 categories with icons/colours) + category picker.
   - **Search & filter** a group's expenses by text and category.

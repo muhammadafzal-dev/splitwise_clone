@@ -31,6 +31,11 @@ class InsightsScreen extends ConsumerWidget {
         title: const Text('Insights'),
         actions: [
           IconButton(
+            tooltip: 'Salary & savings',
+            onPressed: () => context.push(AppRoutes.salary),
+            icon: const Icon(Icons.account_balance_wallet_outlined),
+          ),
+          IconButton(
             tooltip: 'Budgets',
             onPressed: () => context.push(AppRoutes.budgets),
             icon: const Icon(Icons.savings_outlined),

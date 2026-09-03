@@ -53,5 +53,14 @@ service cloud.firestore {
       allow update, delete: if signedIn()
                             && resource.data.userId == request.auth.uid;
     }
+
+    // Salary cycles: strictly private to their owner.
+    match /salaryCycles/{cycleId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn()
+                    && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if signedIn()
+                            && resource.data.userId == request.auth.uid;
+    }
   }
 }

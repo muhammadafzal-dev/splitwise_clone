@@ -70,6 +70,8 @@ flutter run --dart-define=USE_FIREBASE=true
 | **Search & filter** | Filter a group's expenses by text and category |
 | **Insights** | Total spent, spend-by-category donut, monthly bars — from a pure, tested analyzer |
 | **Budgets** | Monthly limit per category with live progress + over-budget warnings |
+| **Salary & savings** | Add salary to start a pay cycle; on next salary, close it (leftover → savings or used) and start a new one; running savings total + history |
+| **Currency** | Per-user preferred currency (USD/EUR/PKR/GBP/JPY); per-group currency |
 | **Personal expenses** | Log solo (non-split) expenses in a private ledger; counted in Insights |
 | **Activity** | Unified feed of expenses and settlements |
 | **Profile** | Current user, friends, user switcher |

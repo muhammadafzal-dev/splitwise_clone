@@ -5,6 +5,8 @@ import '../../features/budgets/domain/entities/budget.dart';
 import '../../features/expenses/domain/entities/expense.dart';
 import '../../features/expenses/domain/entities/settlement.dart';
 import '../../features/groups/domain/entities/group.dart';
+import '../../features/salary/domain/entities/cycle_disposition.dart';
+import '../../features/salary/domain/entities/salary_cycle.dart';
 import 'seed_data.dart';
 
 /// Immutable snapshot of everything in the mock backend at one instant.
@@ -17,6 +19,7 @@ class MockSnapshot {
     required this.settlements,
     required this.friendships,
     required this.budgets,
+    required this.salaryCycles,
   });
 
   final String? currentUserId;
@@ -25,6 +28,7 @@ class MockSnapshot {
   final List<Expense> expenses;
   final List<Settlement> settlements;
   final List<Budget> budgets;
+  final List<SalaryCycle> salaryCycles;
 
   /// userId -> set of friend userIds (symmetric).
   final Map<String, Set<String>> friendships;
@@ -48,6 +52,7 @@ class MockStore {
   final List<Expense> _expenses = [];
   final List<Settlement> _settlements = [];
   final List<Budget> _budgets = [];
+  final List<SalaryCycle> _salaryCycles = [];
   final Map<String, Set<String>> _friendships = {};
 
   final StreamController<MockSnapshot> _controller =
@@ -63,6 +68,7 @@ class MockStore {
     _expenses.addAll(seedExpenses);
     _settlements.addAll(seedSettlements);
     _budgets.addAll(seedBudgets);
+    _salaryCycles.addAll(seedSalaryCycles);
     _friendships.addAll(buildSeedFriendships());
     _currentUserId = seedUsers.first.id;
   }
@@ -74,6 +80,7 @@ class MockStore {
     expenses: List.unmodifiable(_expenses),
     settlements: List.unmodifiable(_settlements),
     budgets: List.unmodifiable(_budgets),
+    salaryCycles: List.unmodifiable(_salaryCycles),
     friendships: {
       for (final e in _friendships.entries) e.key: Set.unmodifiable(e.value),
     },
@@ -176,6 +183,30 @@ class MockStore {
   Future<void> removeBudget(String budgetId) async {
     await Future<void>.delayed(latency);
     _budgets.removeWhere((b) => b.id == budgetId);
+    _emit();
+  }
+
+  Future<SalaryCycle> startSalaryCycle(SalaryCycle cycle) async {
+    await Future<void>.delayed(latency);
+    _salaryCycles.add(cycle);
+    _emit();
+    return cycle;
+  }
+
+  Future<void> closeSalaryCycle(
+    String cycleId, {
+    required int savedMinorUnits,
+    required CycleDisposition disposition,
+    required DateTime endedAt,
+  }) async {
+    await Future<void>.delayed(latency);
+    final index = _salaryCycles.indexWhere((c) => c.id == cycleId);
+    if (index == -1) return;
+    _salaryCycles[index] = _salaryCycles[index].copyWith(
+      endedAt: endedAt,
+      savedMinorUnits: savedMinorUnits,
+      disposition: disposition,
+    );
     _emit();
   }
 
