@@ -58,8 +58,16 @@ class GroupsScreen extends ConsumerWidget {
           return RefreshIndicator(
             onRefresh: () async => ref.invalidate(groupsProvider),
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
               children: [
+                if (currentUser != null) ...[
+                  Text(
+                    'Hi, ${currentUser.name.split(' ').first} 👋',
+                    style: Theme.of(context).textTheme.headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 16),
+                ],
                 const OverallSummaryCard(),
                 const SizedBox(height: 20),
                 Text(

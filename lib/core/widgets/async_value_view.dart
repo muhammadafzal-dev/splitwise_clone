@@ -21,8 +21,10 @@ class AsyncValueView<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // skipLoadingOnRefresh (default true): keep showing existing data while a
+    // refresh is in flight instead of flashing the spinner. The spinner only
+    // shows on the very first load, when there is no data yet.
     return value.when(
-      skipLoadingOnRefresh: false,
       data: data,
       loading: () => LoadingView(message: loadingMessage),
       error: (error, _) =>

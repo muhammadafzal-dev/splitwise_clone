@@ -8,6 +8,7 @@ import '../../../../core/widgets/amount_text.dart';
 import '../../../auth/application/auth_providers.dart';
 import '../../domain/balance/split_calculator.dart';
 import '../../domain/entities/expense.dart';
+import 'expense_detail_sheet.dart';
 
 const _splitCalculator = SplitCalculator();
 
@@ -29,6 +30,7 @@ class ExpenseTile extends ConsumerWidget {
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      onTap: () => showExpenseDetail(context, expense),
       leading: Container(
         width: 44,
         height: 44,
@@ -48,8 +50,9 @@ class ExpenseTile extends ConsumerWidget {
       subtitle: Text(
         '$payerName paid ${moneyFormatter.format(expense.amount)} · '
         '${dateFormatter.dayMonth(expense.createdAt)}',
-        style: theme.textTheme.bodySmall
-            ?.copyWith(color: theme.colorScheme.outline),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.outline,
+        ),
       ),
       trailing: impact == null
           ? null
@@ -61,14 +64,19 @@ class ExpenseTile extends ConsumerWidget {
                   impact.isPositive
                       ? 'you lent'
                       : impact.isNegative
-                          ? 'you borrowed'
-                          : 'not involved',
-                  style: theme.textTheme.labelSmall
-                      ?.copyWith(color: theme.colorScheme.outline),
+                      ? 'you borrowed'
+                      : 'not involved',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 if (!impact.isZero)
-                  AmountText(impact.abs, colored: true, style: theme.textTheme.titleSmall),
+                  AmountText(
+                    impact.abs,
+                    colored: true,
+                    style: theme.textTheme.titleSmall,
+                  ),
               ],
             ),
     );
