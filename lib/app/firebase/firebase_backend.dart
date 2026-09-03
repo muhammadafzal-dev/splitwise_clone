@@ -23,13 +23,17 @@ Future<List<Override>> initializeFirebaseBackend() async {
   final auth = FirebaseAuth.instance;
 
   return [
-    authRepositoryProvider
-        .overrideWithValue(FirebaseAuthRepository(auth, firestore)),
-    friendRepositoryProvider
-        .overrideWithValue(FirebaseFriendRepository(firestore)),
-    groupRepositoryProvider
-        .overrideWithValue(FirebaseGroupRepository(firestore)),
-    expenseRepositoryProvider
-        .overrideWithValue(FirebaseExpenseRepository(firestore)),
+    authRepositoryProvider.overrideWithValue(
+      FirebaseAuthRepository(auth, firestore),
+    ),
+    friendRepositoryProvider.overrideWithValue(
+      FirebaseFriendRepository(firestore),
+    ),
+    groupRepositoryProvider.overrideWithValue(
+      FirebaseGroupRepository(firestore),
+    ),
+    expenseRepositoryProvider.overrideWithValue(
+      FirebaseExpenseRepository(firestore),
+    ),
   ];
 }

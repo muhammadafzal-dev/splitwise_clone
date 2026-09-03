@@ -143,7 +143,5 @@ final seedSettlements = <Settlement>[
 /// Everyone in the demo is friends with everyone else.
 Map<String, Set<String>> buildSeedFriendships() {
   final ids = seedUsers.map((u) => u.id).toList();
-  return {
-    for (final id in ids) id: ids.where((other) => other != id).toSet(),
-  };
+  return {for (final id in ids) id: ids.where((other) => other != id).toSet()};
 }

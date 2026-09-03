@@ -25,13 +25,10 @@ class FirebaseSeeder {
     final friendships = buildSeedFriendships();
 
     for (final user in seedUsers) {
-      batch.set(
-        _firestore.collection('users').doc(user.id),
-        {
-          ...FirestoreMappers.userToMap(user),
-          'friendIds': friendships[user.id]?.toList() ?? const [],
-        },
-      );
+      batch.set(_firestore.collection('users').doc(user.id), {
+        ...FirestoreMappers.userToMap(user),
+        'friendIds': friendships[user.id]?.toList() ?? const [],
+      });
     }
     for (final group in seedGroups) {
       batch.set(

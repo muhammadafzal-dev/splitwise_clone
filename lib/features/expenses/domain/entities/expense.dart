@@ -24,6 +24,7 @@ abstract class Expense with _$Expense {
     required int amountMinorUnits,
     required String currencyCode,
     required SplitType splitType,
+
     /// Everyone who shares this expense (may include the payer).
     required List<String> participantIds,
     required DateTime createdAt,

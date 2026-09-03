@@ -15,13 +15,9 @@ Future<void> main() async {
 
   // The ONLY place the backend is chosen. Mock and Firebase implement the same
   // repository interfaces; everything above the data layer is identical.
-  final overrides =
-      _useFirebase ? await initializeFirebaseBackend() : const <Override>[];
+  final overrides = _useFirebase
+      ? await initializeFirebaseBackend()
+      : const <Override>[];
 
-  runApp(
-    ProviderScope(
-      overrides: overrides,
-      child: const SplitwiseApp(),
-    ),
-  );
+  runApp(ProviderScope(overrides: overrides, child: const SplitwiseApp()));
 }

@@ -25,9 +25,10 @@ class FirebaseGroupRepository implements GroupRepository {
 
   @override
   Stream<Group?> watchGroup(String groupId) {
-    return _groups.doc(groupId).snapshots().map(
-          (doc) => doc.exists ? FirestoreMappers.groupFromDoc(doc) : null,
-        );
+    return _groups
+        .doc(groupId)
+        .snapshots()
+        .map((doc) => doc.exists ? FirestoreMappers.groupFromDoc(doc) : null);
   }
 
   @override

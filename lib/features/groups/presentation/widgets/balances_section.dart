@@ -38,11 +38,15 @@ class BalancesSection extends ConsumerWidget {
               padding: const EdgeInsets.all(20),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle,
-                      color: BalanceColors.positive(context)),
+                  Icon(
+                    Icons.check_circle,
+                    color: BalanceColors.positive(context),
+                  ),
                   const SizedBox(width: 12),
-                  Text('Everyone is settled up',
-                      style: theme.textTheme.titleMedium),
+                  Text(
+                    'Everyone is settled up',
+                    style: theme.textTheme.titleMedium,
+                  ),
                 ],
               ),
             ),

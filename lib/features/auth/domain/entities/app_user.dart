@@ -11,6 +11,7 @@ abstract class AppUser with _$AppUser {
     required String id,
     required String name,
     required String email,
+
     /// ARGB colour used for the avatar when there is no photo.
     required int avatarColor,
   }) = _AppUser;

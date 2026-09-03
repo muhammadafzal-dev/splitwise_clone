@@ -27,10 +27,10 @@ class FirestoreMappers {
   }
 
   static Map<String, dynamic> userToMap(AppUser user) => {
-        'name': user.name,
-        'email': user.email,
-        'avatarColor': user.avatarColor,
-      };
+    'name': user.name,
+    'email': user.email,
+    'avatarColor': user.avatarColor,
+  };
 
   // --- Group -----------------------------------------------------------------
 
@@ -47,12 +47,12 @@ class FirestoreMappers {
   }
 
   static Map<String, dynamic> groupToMap(Group group) => {
-        'name': group.name,
-        'emoji': group.emoji,
-        'memberIds': group.memberIds,
-        'currencyCode': group.currencyCode,
-        'createdAt': Timestamp.fromDate(group.createdAt),
-      };
+    'name': group.name,
+    'emoji': group.emoji,
+    'memberIds': group.memberIds,
+    'currencyCode': group.currencyCode,
+    'createdAt': Timestamp.fromDate(group.createdAt),
+  };
 
   // --- Expense ---------------------------------------------------------------
 
@@ -74,26 +74,26 @@ class FirestoreMappers {
   }
 
   static Map<String, dynamic> expenseToMap(Expense expense) => {
-        'groupId': expense.groupId,
-        'description': expense.description,
-        'payerId': expense.payerId,
-        'amountMinorUnits': expense.amountMinorUnits,
-        'currencyCode': expense.currencyCode,
-        'splitType': expense.splitType.name,
-        'participantIds': expense.participantIds,
-        if (expense.exactShares != null) 'exactShares': expense.exactShares,
-        if (expense.percentShares != null)
-          'percentShares': expense.percentShares,
-        'createdAt': Timestamp.fromDate(expense.createdAt),
-        // Denormalised so a single collection query can fetch everything that
-        // affects a user's balance (payer + participants).
-        'involvedIds': {expense.payerId, ...expense.participantIds}.toList(),
-      };
+    'groupId': expense.groupId,
+    'description': expense.description,
+    'payerId': expense.payerId,
+    'amountMinorUnits': expense.amountMinorUnits,
+    'currencyCode': expense.currencyCode,
+    'splitType': expense.splitType.name,
+    'participantIds': expense.participantIds,
+    if (expense.exactShares != null) 'exactShares': expense.exactShares,
+    if (expense.percentShares != null) 'percentShares': expense.percentShares,
+    'createdAt': Timestamp.fromDate(expense.createdAt),
+    // Denormalised so a single collection query can fetch everything that
+    // affects a user's balance (payer + participants).
+    'involvedIds': {expense.payerId, ...expense.participantIds}.toList(),
+  };
 
   // --- Settlement ------------------------------------------------------------
 
   static Settlement settlementFromDoc(
-      DocumentSnapshot<Map<String, dynamic>> doc) {
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     final data = doc.data() ?? const {};
     return Settlement(
       id: doc.id,
@@ -107,14 +107,14 @@ class FirestoreMappers {
   }
 
   static Map<String, dynamic> settlementToMap(Settlement settlement) => {
-        'groupId': settlement.groupId,
-        'fromUserId': settlement.fromUserId,
-        'toUserId': settlement.toUserId,
-        'amountMinorUnits': settlement.amountMinorUnits,
-        'currencyCode': settlement.currencyCode,
-        'createdAt': Timestamp.fromDate(settlement.createdAt),
-        'involvedIds': [settlement.fromUserId, settlement.toUserId],
-      };
+    'groupId': settlement.groupId,
+    'fromUserId': settlement.fromUserId,
+    'toUserId': settlement.toUserId,
+    'amountMinorUnits': settlement.amountMinorUnits,
+    'currencyCode': settlement.currencyCode,
+    'createdAt': Timestamp.fromDate(settlement.createdAt),
+    'involvedIds': [settlement.fromUserId, settlement.toUserId],
+  };
 
   // --- Primitives ------------------------------------------------------------
 
@@ -136,8 +136,8 @@ class FirestoreMappers {
   }
 
   static SplitType _splitType(String? value) => switch (value) {
-        'exact' => SplitType.exact,
-        'percent' => SplitType.percent,
-        _ => SplitType.equal,
-      };
+    'exact' => SplitType.exact,
+    'percent' => SplitType.percent,
+    _ => SplitType.equal,
+  };
 }

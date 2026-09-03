@@ -30,7 +30,7 @@ enum Currency {
   }
 
   static Currency fromCode(String code) => Currency.values.firstWhere(
-        (c) => c.code == code,
-        orElse: () => Currency.usd,
-      );
+    (c) => c.code == code,
+    orElse: () => Currency.usd,
+  );
 }

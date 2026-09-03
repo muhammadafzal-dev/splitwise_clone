@@ -37,8 +37,9 @@ class FirebaseExpenseRepository implements ExpenseRepository {
         .where('groupId', isEqualTo: groupId)
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snap) =>
-            snap.docs.map(FirestoreMappers.settlementFromDoc).toList());
+        .map(
+          (snap) => snap.docs.map(FirestoreMappers.settlementFromDoc).toList(),
+        );
   }
 
   @override
@@ -56,8 +57,9 @@ class FirebaseExpenseRepository implements ExpenseRepository {
         .where('involvedIds', arrayContains: userId)
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snap) =>
-            snap.docs.map(FirestoreMappers.settlementFromDoc).toList());
+        .map(
+          (snap) => snap.docs.map(FirestoreMappers.settlementFromDoc).toList(),
+        );
   }
 
   @override

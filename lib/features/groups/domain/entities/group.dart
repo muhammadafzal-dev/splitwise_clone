@@ -9,9 +9,11 @@ abstract class Group with _$Group {
   const factory Group({
     required String id,
     required String name,
+
     /// Emoji shown as the group icon.
     required String emoji,
     required List<String> memberIds,
+
     /// ISO 4217 currency code the group settles in.
     required String currencyCode,
     required DateTime createdAt,

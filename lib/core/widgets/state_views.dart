@@ -58,15 +58,13 @@ class EmptyView extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 message!,
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(color: theme.colorScheme.outline),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.outline,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
-            if (action != null) ...[
-              const SizedBox(height: 24),
-              action!,
-            ],
+            if (action != null) ...[const SizedBox(height: 24), action!],
           ],
         ),
       ),
@@ -90,8 +88,7 @@ class ErrorView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline,
-                size: 64, color: theme.colorScheme.error),
+            Icon(Icons.error_outline, size: 64, color: theme.colorScheme.error),
             const SizedBox(height: 16),
             Text(
               'Something went wrong',
@@ -101,8 +98,9 @@ class ErrorView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               message,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.outline),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.outline,
+              ),
               textAlign: TextAlign.center,
             ),
             if (onRetry != null) ...[

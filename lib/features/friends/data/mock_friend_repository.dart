@@ -11,9 +11,8 @@ class MockFriendRepository implements FriendRepository {
   Stream<List<AppUser>> watchFriends(String userId) {
     return _store.watch().map((s) {
       final friendIds = s.friendships[userId] ?? const {};
-      final friends =
-          s.users.where((u) => friendIds.contains(u.id)).toList()
-            ..sort((a, b) => a.name.compareTo(b.name));
+      final friends = s.users.where((u) => friendIds.contains(u.id)).toList()
+        ..sort((a, b) => a.name.compareTo(b.name));
       return friends;
     });
   }

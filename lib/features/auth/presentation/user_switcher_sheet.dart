@@ -50,8 +50,10 @@ class _UserSwitcherSheet extends ConsumerWidget {
                       title: Text(user.name),
                       subtitle: Text(user.email),
                       trailing: user.id == currentId
-                          ? Icon(Icons.check_circle,
-                              color: Theme.of(context).colorScheme.primary)
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
                           : null,
                       onTap: () async {
                         await ref

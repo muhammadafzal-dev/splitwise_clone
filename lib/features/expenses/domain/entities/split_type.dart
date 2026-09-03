@@ -15,8 +15,8 @@ enum SplitType {
   percent;
 
   String get label => switch (this) {
-        SplitType.equal => 'Equally',
-        SplitType.exact => 'Exact amounts',
-        SplitType.percent => 'Percentages',
-      };
+    SplitType.equal => 'Equally',
+    SplitType.exact => 'Exact amounts',
+    SplitType.percent => 'Percentages',
+  };
 }

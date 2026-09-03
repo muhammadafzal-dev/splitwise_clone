@@ -50,11 +50,13 @@ class SettlementCalculator {
           ? creditor.amount
           : debtor.amount;
 
-      edges.add(DebtEdge(
-        fromUserId: debtor.userId,
-        toUserId: creditor.userId,
-        amount: Money(pay, currency),
-      ));
+      edges.add(
+        DebtEdge(
+          fromUserId: debtor.userId,
+          toUserId: creditor.userId,
+          amount: Money(pay, currency),
+        ),
+      );
 
       creditor.amount -= pay;
       debtor.amount -= pay;

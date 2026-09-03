@@ -46,12 +46,14 @@ class ProfileScreen extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(user.name,
-                                style: theme.textTheme.titleLarge),
+                            Text(user.name, style: theme.textTheme.titleLarge),
                             const SizedBox(height: 2),
-                            Text(user.email,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: theme.colorScheme.outline)),
+                            Text(
+                              user.email,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.outline,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -97,8 +99,9 @@ class ProfileScreen extends ConsumerWidget {
               Center(
                 child: Text(
                   'Mock data · theme follows system',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: theme.colorScheme.outline),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
                 ),
               ),
             ],

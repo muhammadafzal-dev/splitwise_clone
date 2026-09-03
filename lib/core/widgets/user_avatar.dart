@@ -57,7 +57,9 @@ class AvatarStack extends StatelessWidget {
     final overlap = radius * 1.2;
     final width = shown.isEmpty
         ? 0.0
-        : radius * 2 + (shown.length - 1) * overlap + (overflow > 0 ? overlap : 0);
+        : radius * 2 +
+              (shown.length - 1) * overlap +
+              (overflow > 0 ? overlap : 0);
 
     return SizedBox(
       height: radius * 2,
@@ -67,7 +69,10 @@ class AvatarStack extends StatelessWidget {
           for (var i = 0; i < shown.length; i++)
             Positioned(
               left: i * overlap,
-              child: _ringed(context, UserAvatar(user: shown[i], radius: radius)),
+              child: _ringed(
+                context,
+                UserAvatar(user: shown[i], radius: radius),
+              ),
             ),
           if (overflow > 0)
             Positioned(
@@ -76,8 +81,9 @@ class AvatarStack extends StatelessWidget {
                 context,
                 CircleAvatar(
                   radius: radius,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest,
                   child: Text(
                     '+$overflow',
                     style: TextStyle(
@@ -95,13 +101,13 @@ class AvatarStack extends StatelessWidget {
   }
 
   Widget _ringed(BuildContext context, Widget child) => Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            width: 2,
-          ),
-        ),
-        child: child,
-      );
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      border: Border.all(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        width: 2,
+      ),
+    ),
+    child: child,
+  );
 }

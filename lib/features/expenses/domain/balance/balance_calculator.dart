@@ -12,7 +12,7 @@ import 'split_calculator.dart';
 /// always sum to zero — the money in the system is conserved.
 class BalanceCalculator {
   const BalanceCalculator({SplitCalculator? splitCalculator})
-      : _split = splitCalculator ?? const SplitCalculator();
+    : _split = splitCalculator ?? const SplitCalculator();
 
   final SplitCalculator _split;
 
@@ -67,14 +67,15 @@ class BalanceCalculator {
       settlements: settlements,
       currency: currency,
     );
-    final list = [
-      for (final entry in net.entries)
-        Balance(userId: entry.key, amount: entry.value),
-    ]..sort((a, b) {
-        final byAmount = b.amount.compareTo(a.amount);
-        if (byAmount != 0) return byAmount;
-        return a.userId.compareTo(b.userId);
-      });
+    final list =
+        [
+          for (final entry in net.entries)
+            Balance(userId: entry.key, amount: entry.value),
+        ]..sort((a, b) {
+          final byAmount = b.amount.compareTo(a.amount);
+          if (byAmount != 0) return byAmount;
+          return a.userId.compareTo(b.userId);
+        });
     return list;
   }
 

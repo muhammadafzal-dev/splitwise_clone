@@ -48,8 +48,9 @@ class GroupTile extends ConsumerWidget {
                   children: [
                     Text(
                       group.name,
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w600),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     AvatarStack(users: members),
@@ -123,15 +124,16 @@ class _GroupBalanceLabel extends StatelessWidget {
         final label = mine.isZero
             ? 'settled up'
             : mine.isPositive
-                ? 'you are owed'
-                : 'you owe';
+            ? 'you are owed'
+            : 'you owe';
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
               label,
-              style: theme.textTheme.labelSmall
-                  ?.copyWith(color: theme.colorScheme.outline),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.outline,
+              ),
             ),
             const SizedBox(height: 2),
             if (!mine.isZero)
@@ -144,8 +146,11 @@ class _GroupBalanceLabel extends StatelessWidget {
                 ),
               )
             else
-              Icon(Icons.check_circle_outline,
-                  size: 20, color: theme.colorScheme.outline),
+              Icon(
+                Icons.check_circle_outline,
+                size: 20,
+                color: theme.colorScheme.outline,
+              ),
           ],
         );
       },

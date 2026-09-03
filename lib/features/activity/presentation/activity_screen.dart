@@ -75,8 +75,9 @@ class _ActivityRow extends StatelessWidget {
       title: text,
       subtitle: Text(
         dateFormatter.relative(item.timestamp),
-        style: theme.textTheme.bodySmall
-            ?.copyWith(color: theme.colorScheme.outline),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.outline,
+        ),
       ),
     );
   }
@@ -108,16 +109,17 @@ class _ActivityRow extends StatelessWidget {
               _b(from),
               const TextSpan(text: ' paid '),
               _b(to),
-              TextSpan(
-                  text: ' · ${moneyFormatter.format(settlement.amount)}'),
+              TextSpan(text: ' · ${moneyFormatter.format(settlement.amount)}'),
             ],
           ),
         );
     }
   }
 
-  TextSpan _b(String text) =>
-      TextSpan(text: text, style: const TextStyle(fontWeight: FontWeight.w600));
+  TextSpan _b(String text) => TextSpan(
+    text: text,
+    style: const TextStyle(fontWeight: FontWeight.w600),
+  );
 }
 
 class _RichLine extends StatelessWidget {
@@ -128,10 +130,7 @@ class _RichLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text.rich(
-      TextSpan(
-        style: Theme.of(context).textTheme.bodyMedium,
-        children: spans,
-      ),
+      TextSpan(style: Theme.of(context).textTheme.bodyMedium, children: spans),
     );
   }
 }

@@ -10,16 +10,17 @@ class MockExpenseRepository implements ExpenseRepository {
 
   @override
   Stream<List<Expense>> watchGroupExpenses(String groupId) {
-    return _store.watch().map((s) => _sortedExpenses(
-          s.expenses.where((e) => e.groupId == groupId),
-        ));
+    return _store.watch().map(
+      (s) => _sortedExpenses(s.expenses.where((e) => e.groupId == groupId)),
+    );
   }
 
   @override
   Stream<List<Settlement>> watchGroupSettlements(String groupId) {
-    return _store.watch().map((s) => _sortedSettlements(
-          s.settlements.where((x) => x.groupId == groupId),
-        ));
+    return _store.watch().map(
+      (s) =>
+          _sortedSettlements(s.settlements.where((x) => x.groupId == groupId)),
+    );
   }
 
   @override

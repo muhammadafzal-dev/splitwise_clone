@@ -22,8 +22,9 @@ class AmountText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text =
-        signed ? moneyFormatter.formatSigned(money) : moneyFormatter.format(money);
+    final text = signed
+        ? moneyFormatter.formatSigned(money)
+        : moneyFormatter.format(money);
     final baseStyle = style ?? Theme.of(context).textTheme.bodyLarge;
     return Text(
       text,
