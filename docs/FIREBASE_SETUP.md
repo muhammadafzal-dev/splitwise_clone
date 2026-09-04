@@ -26,9 +26,9 @@ config + flip the flag — no code changes.
    - Android: put `google-services.json` in `android/app/`.
    - iOS: put `GoogleService-Info.plist` in `ios/Runner/` (add it in Xcode so it's
      bundled).
-   - The Gradle google-services plugin is usually auto-wired by the
-     `firebase_core` plugin; if a build complains, apply
-     `com.google.gms.google-services` in `android/app/build.gradle`.
+   - The required Google Services Gradle plugin is already configured in
+     `android/settings.gradle.kts` and `android/app/build.gradle.kts`. Do not
+     add a second declaration.
 
 3. **Enable Authentication** — turn on a sign-in method (Email/Password or Google)
    in the Firebase console. Note: `signInAs()` (the mock user switcher) is
