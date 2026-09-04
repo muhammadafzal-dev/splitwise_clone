@@ -49,7 +49,7 @@ app.*.map.json
 .widget_preview/
 
 # Firebase config (add locally; kept out of the public repo)
-android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
+# android/app/google-services.json
+# ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
 .firebase/

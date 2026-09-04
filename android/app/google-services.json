@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "899615154479",
+    "project_id": "splitwise-2a3b9",
+    "storage_bucket": "splitwise-2a3b9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899615154479:android:9a3df7c63f536461f3c1da",
+        "android_client_info": {
+          "package_name": "com.masoft.splitwise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899615154479-lhovppidopk3n9lp1l5vrv65cpg572cf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxPHG_3O3LVxK7ppJn7tPM1GSRhDFFTTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899615154479-lhovppidopk3n9lp1l5vrv65cpg572cf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
