@@ -1,4 +1,4 @@
-package com.gsoft.splitwise_clone
+package com.masoft.splitwise
 
 import io.flutter.embedding.android.FlutterActivity
 
